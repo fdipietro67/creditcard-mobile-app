@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import "./app.css";
+
+@theme {
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif;
+  --font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
+  --color-ink: #0E1726;
+  --color-ink-2: #42506A;
+  --color-ink-3: #7A88A0;
+  --color-barclays: #00AEEF;
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+}
+
+/* Tailwind preflight resets button/img styles the prototype relied on UA defaults for. */
+.cardface img { display: inline-block; }
+.bxlock img { max-width: none; }
+
+/* Touch targets: keep the prototype's visual sizes but grow the hit area to >=44px. */
+.ai, .back, .addbtn { position: relative; }
+.ai::before, .back::before { content: ""; position: absolute; inset: -4px; }
+.addbtn::before { content: ""; position: absolute; inset: -9px; }
+.mi { min-height: 48px; }
+
+/* Attendee phone: drop the stage + device chrome and run the app full-bleed. */
+@media (max-width: 520px) {
+  .stage { display: block; justify-items: normal; padding: 0; max-width: none; }
+  .brief, .controls, .caption, .notch { display: none; }
+  .phone-wrap { display: block; }
+  .phone { width: 100%; max-width: none; height: 100dvh; border-radius: 0; padding: 0; box-shadow: none; background: var(--surface-2); }
+  .screen { border-radius: 0; }
+  .statusbar { display: none; }
+  .appbar { padding-top: calc(env(safe-area-inset-top) + 12px); }
+  .homebar { height: env(safe-area-inset-bottom); }
+  .homebar i { display: none; }
+  .menu-panel { top: calc(env(safe-area-inset-top) + 56px); }
+}
