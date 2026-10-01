@@ -1,5 +1,5 @@
 import { fmt } from "../lib/bnpl";
-import { ContactlessIco, VisaMark } from "./icons";
+import { ContactlessIco, Money2020Mark, VisaMark } from "./icons";
 import type { Partner } from "./partners";
 
 export function CardFace({ p }: { p: Partner }) {
@@ -14,10 +14,13 @@ export function CardFace({ p }: { p: Partner }) {
     return (
       <div className="cardface visa-sig" style={{ background: p.card }}>
         <div className="cardtop">
-          <div className="chip" />
+          <Money2020Mark />
           <span className="contactless"><ContactlessIco /></span>
         </div>
-        <div className="pan">{p.pan}</div>
+        <div className="cardmid">
+          <div className="chip" />
+          <div className="pan">{p.pan}</div>
+        </div>
         <div className="cardbot">
           <div>
             <div className="lbl">Available credit</div>

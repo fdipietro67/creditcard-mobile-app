@@ -7,6 +7,11 @@ const brandFiles = import.meta.glob("../assets/brand/visa-logo.{svg,png}", {
 const VISA_LOGO_URL: string | undefined =
   Object.entries(brandFiles).find(([k]) => k.endsWith(".svg"))?.[1] ?? Object.values(brandFiles)[0];
 
+import money2020Logo from "../assets/brand/money2020-logo.svg";
+
+/** Official Money20/20 wordmark (white), from money2020.com. */
+export const Money2020Mark = () => <img src={money2020Logo} alt="Money20/20" className="m2020-logo" />;
+
 export const VisaMark = () =>
   VISA_LOGO_URL ? (
     <img src={VISA_LOGO_URL} alt="Visa" className="visa-logo" />

@@ -4,7 +4,7 @@ A themeable Buy Now, Pay Later cardholder app for the booth. It includes a Build
 brands the app for a client and gets a short link, a QR code and a printable sign. The app is ported
 from `bnpl-cobrand-prototype.html`.
 
-By default (no client branding) the app shows a **Visa Signature** card for Money20/20. A client
+By default (no client branding) the app shows a black **Money20/20 Visa Signature** card. A client
 config from the Builder or a link replaces it with the client's own card. It is an **illustrative
 concept only**: balances, merchants and figures are sample data.
 
@@ -67,13 +67,19 @@ The app picks its config from the first source that has one:
 All input is sanitized by `src/config/schema.ts`, which the app and the Worker share. The Builder's
 preview also pushes configs live with `postMessage({ __demoCfg: true, cfg })` (same origin only).
 
-## Visa Signature card face
+## Default card face (Money20/20 Visa Signature)
 
-The default card is drawn in code: dark navy, chip, contactless arcs, and the official Visa logo
+With no client branding, the app shows a black **Money20/20 Visa Signature** card, drawn in code.
+It has the Money20/20 wordmark top-left, a chip, contactless arcs, and the official Visa logo
 (reversed to white) with "Signature" at bottom right. Any client branding (name, color or card
-image) replaces it. The logo comes from Visa's CDN and lives in `src/assets/brand/visa-logo.png`.
-Visa permits its use on card mockups and prototypes. To use a higher-resolution version from Visa's
-brand resources, add `visa-logo.svg` there and rebuild; it takes precedence over the PNG.
+image) replaces it.
+
+Artwork lives in `src/assets/brand/`:
+- `money2020-logo.svg`: the white Money20/20 logo from money2020.com's own assets. Its view box is
+  cropped to the MONEY 20/20 wordmark, leaving out the small "by informa" line; no shapes were
+  changed. To use the full lockup, set the SVG's `height`/`viewBox` back to `66`.
+- `visa-logo.png`: the Visa logo from Visa's CDN. Visa permits its use on card mockups and
+  prototypes. A `visa-logo.svg` added alongside takes precedence.
 
 ## Booth behavior
 

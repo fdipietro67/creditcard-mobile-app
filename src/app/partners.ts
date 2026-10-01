@@ -33,13 +33,13 @@ export type Partner = {
   seed: { id: string; m: string; loc: string; g: string; principal: number; months: number; paid: number; monthsAgo: number };
 };
 
-// Money20/20 default: a Visa Signature card. A client config (Builder / link) replaces the
+// Money20/20 default: a black Money20/20 Visa Signature card. A client config (Builder / link) replaces the
 // branding; balances, transactions and plans are sample data.
 export const DEFAULT_CARD: Partner = {
-  name: "Visa Signature",
-  product: "Visa Signature Card",
+  name: "Money20/20",
+  product: "Money20/20 Visa Signature",
   network: "visa-signature",
-  card: "linear-gradient(135deg,#0A0E1F 0%,#141B4D 55%,#1A1F71 100%)",
+  card: "linear-gradient(135deg,#000000 0%,#0B0B0C 55%,#1A1A1C 100%)",
   accent: "#1434CB",
   accentSoft: "rgba(20,52,203,.10)",
   rewardsLabel: "",

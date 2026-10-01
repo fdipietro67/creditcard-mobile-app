@@ -48,20 +48,23 @@
 .resetbtn:active { transform: scale(.97); }
 .switch button { min-height: 38px; }
 
-/* Visa Signature card face (default Money20/20 demo). */
-.cardface.visa-sig { min-height: 200px; }
+/* Default card face: black Money20/20 Visa Signature (shown when no client branding is set). */
+.cardface.visa-sig { min-height: 206px; gap: 12px; }
+.cardface.visa-sig::after { background: rgba(255,255,255,.045); }
 .cardface.visa-sig::before {
   content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
   background:
-    radial-gradient(120% 80% at 100% 100%, rgba(247,182,0,.10), transparent 55%),
-    repeating-linear-gradient(115deg, rgba(255,255,255,.035) 0 2px, transparent 2px 9px);
+    radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.06), transparent 50%),
+    repeating-linear-gradient(115deg, rgba(255,255,255,.022) 0 2px, transparent 2px 9px);
 }
-.cardface.visa-sig .cardtop { align-items: center; }
-.cardface.visa-sig .contactless { opacity: .85; display: flex; }
-.cardface.visa-sig .pan { font-size: 18px; margin-top: 4px; }
-.cardface.visa-sig .cardholder { margin-top: 10px; }
+.cardface.visa-sig .cardtop { align-items: flex-start; }
+.cardface.visa-sig .m2020-logo { height: 34px; width: auto; display: block; }
+.cardface.visa-sig .contactless { opacity: .85; display: flex; margin-top: 4px; }
+.cardface.visa-sig .cardmid { gap: 10px; }
+.cardface.visa-sig .pan { font-size: 17px; }
+.cardface.visa-sig .cardholder { margin-top: 8px; }
 .cardface.visa-sig .network { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-/* Official logo, reversed to white on the dark card. */
+/* Official Visa logo, reversed to white on the dark card. */
 .cardface.visa-sig .visa-logo { height: 24px; width: auto; display: block; filter: brightness(0) invert(1); }
 .cardface.visa-sig .visa-word {
   font-family: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif;
