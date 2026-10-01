@@ -152,11 +152,29 @@ function SuccessModal() {
 }
 
 function Stage() {
-  const { partner, ui, patch, reset, resetNonce, nav, data } = useApp();
+  const { partner, ui, patch, reset, resetNonce, nav, data, tab, home } = useApp();
   const unread = data.alerts.filter((a) => a.unread).length;
   const { preview } = useDemoConfig();
   const [idleSeconds] = useState(() => (preview ? 0 : idleSecondsFromUrl()));
   useIdleReset(idleSeconds, reset);
+
+  // When embedded (deck / Builder preview), the parent page can drive the app.
+  useEffect(() => {
+    if (!preview) return;
+    const onMsg = (ev: MessageEvent) => {
+      if (ev.origin !== window.location.origin || !ev.data) return;
+      if (ev.data.__demoReset) reset();
+      const to = ev.data.__demoNav as string | undefined;
+      if (!to) return;
+      if (to === "home" || to === "pay" || to === "statements" || to === "rewards") tab(to);
+      else if (to === "controls" || to === "bnpl" || to === "alerts" || to === "services" || to === "documents" || to === "activity") {
+        home();
+        nav(to);
+      }
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, [preview, reset, tab, home, nav]);
 
   useEffect(() => {
     const r = document.documentElement.style;

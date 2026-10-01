@@ -7,3 +7,14 @@ The Visa Signature card face renders it white (reversed) on the dark card.
 
 To use a different or higher-resolution version from Visa's brand resources, replace the file. A
 `visa-logo.svg` takes precedence over the PNG if both exist. Then rebuild.
+
+## Euronet deck
+
+From euronet.com / euronetworldwide.com (official site assets):
+- `euronet-logo-white.svg`: Euronet logo for dark (Euronet blue) backgrounds
+- `euronet-logo.svg`: full-color Euronet logo for light backgrounds
+- `ren-logo.png`: Ren, a Euronet Brand
+- `corecard-logo.png`: CoreCard, a Euronet Company
+
+Brand colors (from the logo files and the Stablecoin-Backed Cards one-pager): Euronet blue
+`#243F90`, teal `#00B7B0`.

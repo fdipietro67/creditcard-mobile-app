@@ -6,6 +6,7 @@ import PhoneApp from "./app/PhoneApp";
 import { registerServiceWorker } from "./pwa";
 
 const Builder = lazy(() => import("./builder/Builder"));
+const Deck = lazy(() => import("./deck/Deck"));
 
 function DemoRoot() {
   const { ready } = useDemoConfig();
@@ -14,13 +15,12 @@ function DemoRoot() {
 }
 
 const isBuilder = /^\/builder\/?$/.test(window.location.pathname);
+const isDeck = /^\/deck\/?$/.test(window.location.pathname);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {isBuilder ? (
-      <Suspense fallback={null}>
-        <Builder />
-      </Suspense>
+    {isBuilder || isDeck ? (
+      <Suspense fallback={null}>{isDeck ? <Deck /> : <Builder />}</Suspense>
     ) : (
       <DemoConfigProvider>
         <DemoRoot />
