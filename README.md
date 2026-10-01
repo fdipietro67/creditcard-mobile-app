@@ -93,6 +93,10 @@ Artwork lives in `src/assets/brand/`:
 Loyalty. The demo and Loyalty slides embed the live card app.
 
 - **Presenter mode:** ← / → / Space, click or swipe. `F` toggles fullscreen and `K` toggles kiosk. `#n` opens slide n.
+- **Speaker notes:** `N` toggles a notes drawer on the slide screen (for rehearsal or presenting from
+  one screen). `S` opens a presenter window with the notes, the current and next slide, a timer and
+  Previous/Next buttons. It stays in sync with the slides in both directions, hosted or from the offline
+  file. Notes live in `src/deck/notes.ts`, keyed by slide id; a test fails if a slide has none.
 - **Kiosk mode** (`?mode=kiosk`, `&t=12` sets seconds per slide): advances on its own and loops. It
   pauses for 45 seconds after a touch, skips slides marked `draft`, and the phone app tours its screens.
 - **Design system:** every slide is built from `src/deck/kit.tsx` (title, section divider, content

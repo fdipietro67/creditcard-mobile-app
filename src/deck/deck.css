@@ -140,3 +140,45 @@
 .dk-close-cta { position: absolute; right: 120px; bottom: 96px; text-align: right; display: flex; flex-direction: column; gap: 8px; }
 .dk-close-cta span { font-size: 26px; color: rgba(255,255,255,.85); }
 .dk-close-cta b { font-size: 34px; color: var(--eu-teal); }
+
+/* ── speaker notes ── */
+.dk-nav button.txt { width: auto; padding: 0 12px; font-size: 13px; font-weight: 600; border-radius: 999px; }
+.dk-nav button.txt[aria-pressed="true"] { background: var(--eu-teal); }
+.dk-notes { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(1100px, calc(100vw - 32px)); max-height: 36vh; overflow: auto; z-index: 20; background: rgba(11,21,48,.94); color: #fff; border-radius: 16px; padding: 16px 22px 18px; box-shadow: 0 20px 50px rgba(0,0,0,.45); backdrop-filter: blur(8px); font-size: 17px; line-height: 1.5; }
+.dk-notes-h { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--eu-teal); margin-bottom: 8px; }
+.dk-notes ul, .dk-p-notes ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.dk-notes li, .dk-p-notes li { position: relative; padding-left: 18px; }
+.dk-notes li::before, .dk-p-notes li::before { content: ""; position: absolute; left: 0; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--eu-teal); }
+li.todo { color: #F6C76B; font-style: italic; }
+li.todo::before { background: #F6C76B !important; }
+.dk-notes-tip { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: rgba(0,183,176,.14); color: #D6F3F1; }
+.dk-notes-tip b { color: var(--eu-teal); margin-right: 6px; text-transform: uppercase; font-size: .78em; letter-spacing: .08em; }
+.dk-notes-empty { color: rgba(255,255,255,.6); }
+
+/* ── presenter window ── */
+.dk-presenter { position: fixed; inset: 0; display: flex; flex-direction: column; background: #0B1530; color: #fff; overflow: hidden; }
+.dk-p-bar { display: flex; align-items: center; gap: 18px; padding: 12px 20px; background: var(--eu-blue); font-size: 15px; font-weight: 600; flex: none; flex-wrap: wrap; }
+.dk-p-count { font-weight: 800; }
+.dk-p-section { color: rgba(255,255,255,.75); }
+.dk-p-timer { margin-left: auto; font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--eu-teal); }
+.dk-p-clock { font-variant-numeric: tabular-nums; color: rgba(255,255,255,.8); }
+.dk-p-warn { width: 100%; color: #F6C76B; font-size: 13px; }
+:is(.dk-p-bar, .dk-p-tools, .dk-p-foot) button  { min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #fff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+:is(.dk-p-bar, .dk-p-tools, .dk-p-foot) button:hover  { background: rgba(255,255,255,.16); }
+:is(.dk-p-bar, .dk-p-tools, .dk-p-foot) button:disabled  { opacity: .35; cursor: default; }
+.dk-p-main { flex: 1; min-height: 0; display: grid; grid-template-columns: auto 1fr; gap: 24px; padding: 20px; }
+.dk-p-left { display: flex; flex-direction: column; gap: 16px; overflow: auto; }
+.dk-thumb { overflow: hidden; border-radius: 10px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.4); flex: none; position: relative; }
+.dk-thumb .dk-slide { position: absolute; inset: 0; }
+.dk-p-next { display: flex; flex-direction: column; gap: 8px; }
+.dk-p-next > span, .dk-p-tools > span { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.dk-p-next em { color: rgba(255,255,255,.5); }
+.dk-p-notes { overflow: auto; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 16px 22px 22px; font-size: var(--note-size, 24px); line-height: 1.5; }
+.dk-p-notes .dk-notes-h { font-size: 13px; }
+.dk-p-tools { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.dk-p-tools > span { margin-right: auto; }
+.dk-p-tools button { min-height: 34px; padding: 0 10px; }
+.dk-p-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 12px 20px 16px; flex: none; }
+.dk-p-foot button { min-height: 52px; padding: 0 28px; font-size: 17px; }
+.dk-p-foot button.primary { background: var(--eu-teal); border-color: var(--eu-teal); color: #0B1530; }
+@media (max-width: 900px) { .dk-p-main { grid-template-columns: 1fr; } }
