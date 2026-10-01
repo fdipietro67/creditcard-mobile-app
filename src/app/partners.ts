@@ -65,7 +65,7 @@ export const BASE_PARTNERS: Record<PartnerKey, Partner> = {
       { id: "a7", m: "Shell", loc: "Fuel", g: "#DD1D21", amt: 54.2, pct: "1.00%", elig: false },
       { id: "a8", m: "Starbucks", loc: "Coffee", g: "#00704A", amt: 6.85, pct: "3.00%", elig: false },
     ],
-    seed: { id: "seedA", m: "Cirrus Resorts · Maui", loc: "Travel", g: "#7A5CF0", principal: 2400, months: 6, paid: 2, monthsAgo: 2 },
+    seed: { id: "seedA", m: "Hilton Hawaiian Village", loc: "Hotel · Honolulu", g: "#104C97", principal: 2400, months: 6, paid: 2, monthsAgo: 2 },
   },
   casa: {
     name: "Casa Home",
