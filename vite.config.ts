@@ -5,25 +5,60 @@ import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
 import { viteSingleFile } from "vite-plugin-singlefile";
 
-const STANDALONE_OUT = ".standalone";
+const STANDALONE_OUT = "standalone-dist";
+const DECK_OUT = "deck-dist";
 
-/** Ship the single-file build (built first, see `npm run build`) as /standalone.html. */
-function includeStandalone(): Plugin {
+/** Ship the single-file builds (built first, see `npm run build`): /standalone.html and /euronet-deck.html. */
+function includeSingleFiles(): Plugin {
+  const files = [
+    { from: `${STANDALONE_OUT}/standalone.html`, to: "standalone.html" },
+    { from: `${DECK_OUT}/deck.html`, to: "euronet-deck.html" },
+  ];
   return {
-    name: "include-standalone",
+    name: "include-single-files",
     apply: "build",
     generateBundle() {
+      for (const f of files) {
+        if (!existsSync(f.from)) {
+          this.warn(`${f.to} missing: run \`npm run build\` (not \`vite build\`) to include it`);
+          continue;
+        }
+        this.emitFile({ type: "asset", fileName: f.to, source: readFileSync(f.from, "utf8") });
+      }
+    },
+  };
+}
+
+/** The offline deck packs the single-file app, base64-encoded (it contains </script>). */
+function offlineApp(): Plugin {
+  const id = "virtual:offline-app";
+  return {
+    name: "offline-app",
+    resolveId: (s) => (s === id ? "\0" + id : null),
+    load(s) {
+      if (s !== "\0" + id) return null;
       const f = `${STANDALONE_OUT}/standalone.html`;
       if (!existsSync(f)) {
-        this.warn("standalone.html missing: run `npm run build` (not `vite build`) to include the offline file");
-        return;
+        this.warn("standalone.html missing: the offline deck's live demo slides will be empty");
+        return 'export default "";';
       }
-      this.emitFile({ type: "asset", fileName: "standalone.html", source: readFileSync(f, "utf8") });
+      return `export default ${JSON.stringify(readFileSync(f).toString("base64"))};`;
     },
   };
 }
 
 export default defineConfig(({ mode }) => {
+  if (mode === "deck") {
+    return {
+      plugins: [react(), offlineApp(), viteSingleFile()],
+      build: {
+        outDir: DECK_OUT,
+        emptyOutDir: true,
+        rollupOptions: { input: "deck.html" },
+      },
+    };
+  }
+
   if (mode === "standalone") {
     return {
       plugins: [react(), tailwindcss(), viteSingleFile()],
@@ -39,7 +74,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
-      includeStandalone(),
+      includeSingleFiles(),
       VitePWA({
         registerType: "autoUpdate",
         injectRegister: false,
@@ -63,7 +98,7 @@ export default defineConfig(({ mode }) => {
           globPatterns: ["**/*.{js,css,html,svg,png,woff2,webmanifest}"],
           maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
           navigateFallback: "/index.html",
-          navigateFallbackDenylist: [/^\/api\//, /^\/standalone\.html$/],
+          navigateFallbackDenylist: [/^\/api\//, /^\/standalone\.html$/, /^\/euronet-deck\.html$/],
           cleanupOutdatedCaches: true,
           runtimeCaching: [
             {

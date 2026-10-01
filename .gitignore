@@ -3,6 +3,7 @@ dist
 *.local
 .DS_Store
 *.tsbuildinfo
-.standalone
+standalone-dist
+deck-dist
 .wrangler
 .dev.vars

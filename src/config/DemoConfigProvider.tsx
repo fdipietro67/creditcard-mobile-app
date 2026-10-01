@@ -28,7 +28,7 @@ const CACHE_KEY = "bnpl-demo:last-short-config";
 export function DemoConfigProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<Ctx>(() => {
     const p = new URLSearchParams(window.location.search);
-    const preview = p.get("preview") === "1";
+    const preview = p.get("preview") === "1" || !!window.__DEMO_PREVIEW__;
     if (window.__DEMO_CONFIG__) return { config: sanitizeConfig(window.__DEMO_CONFIG__), ready: true, preview };
     return { config: configFromParams(p), ready: !p.get("c"), preview };
   });
@@ -77,7 +77,8 @@ export function DemoConfigProvider({ children }: { children: ReactNode }) {
     window.addEventListener("message", onMsg);
     // Tell an embedding Builder we're listening so it can push the current config.
     try {
-      if (window.parent !== window) window.parent.postMessage({ __demoReady: true }, window.location.origin);
+      if (window.parent !== window)
+        window.parent.postMessage({ __demoReady: true }, window.location.origin === "null" ? "*" : window.location.origin);
     } catch {
       /* opaque origin (file://) — nothing to notify */
     }

@@ -71,5 +71,7 @@ export function shareUrl(base: string, cfg: DemoConfig, id?: string): string {
 declare global {
   interface Window {
     __DEMO_CONFIG__?: unknown;
+    /** Set when the app is embedded in the offline deck. */
+    __DEMO_PREVIEW__?: boolean;
   }
 }

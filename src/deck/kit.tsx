@@ -3,6 +3,7 @@
  * identical across the deck. Brand: Euronet blue #243F90, teal #00B7B0 (see assets/brand/README).
  */
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { appFrameProps, postTarget } from "./appSource";
 import euronetWhite from "../assets/brand/euronet-logo-white.svg";
 import euronetColor from "../assets/brand/euronet-logo.svg";
 import renLogo from "../assets/brand/ren-logo.png";
@@ -185,7 +186,7 @@ const SCREENS: { id: string; label: string }[] = [
 let liveFrame: HTMLIFrameElement | null = null;
 const listeners = new Set<(id: string) => void>();
 function sendToApp(msg: { __demoNav?: string; __demoReset?: boolean }) {
-  liveFrame?.contentWindow?.postMessage(msg, window.location.origin);
+  liveFrame?.contentWindow?.postMessage(msg, postTarget());
   const id = msg.__demoReset ? "home" : msg.__demoNav;
   if (id) listeners.forEach((l) => l(id));
 }
@@ -210,7 +211,7 @@ export function LiveApp({ start = "home", tour }: { start?: string; tour?: boole
   }, [tour, start]);
   return (
     <div className="dk-phone">
-      <iframe ref={ref} title="Live cardholder app" src="/?preview=1" onLoad={() => start !== "home" && sendToApp({ __demoNav: start })} />
+      <iframe ref={ref} title="Live cardholder app" {...appFrameProps()} onLoad={() => start !== "home" && sendToApp({ __demoNav: start })} />
     </div>
   );
 }

@@ -16,6 +16,8 @@ concept only**: balances, merchants and figures are sample data.
 | `/` | The demo app: phone frame + narration on a tablet/desktop, full-screen on a phone |
 | `/?c=<id>` | A branded demo from a short link |
 | `/builder` | The branding editor: live preview, short link + QR, print sign, offline file |
+| `/deck` | The Euronet Money20/20 deck (presenter mode; `?mode=kiosk` for the booth loop) |
+| `/euronet-deck.html` | The whole deck as one offline file (download it) |
 | `/api/c` | `POST` a config, get `{ id }` back (also accepts `PUT`) |
 | `/api/c/:id` | `GET` a stored config |
 
@@ -83,6 +85,23 @@ Artwork lives in `src/assets/brand/`:
   changed. To use the full lockup, set the SVG's `height`/`viewBox` back to `66`.
 - `visa-logo.png`: the Visa logo from Visa's CDN. Visa permits its use on card mockups and
   prototypes. A `visa-logo.svg` added alongside takes precedence.
+
+## Euronet deck
+
+`/deck` is an HTML slide deck that presents Euronet, Ren (ATM & Self-Service) and CoreCard
+(Issuing & Processing). The CoreCard use cases are Stablecoin-Backed Cards, BNPL, Commercial and
+Loyalty. The demo and Loyalty slides embed the live card app.
+
+- **Presenter mode:** ← / → / Space, click or swipe. `F` toggles fullscreen and `K` toggles kiosk. `#n` opens slide n.
+- **Kiosk mode** (`?mode=kiosk`, `&t=12` sets seconds per slide): advances on its own and loops. It
+  pauses for 45 seconds after a touch, skips slides marked `draft`, and the phone app tours its screens.
+- **Design system:** every slide is built from `src/deck/kit.tsx` (title, section divider, content
+  template, stats, tiles, steps, layers, checks), so branding stays consistent. Slide content lives
+  in `src/deck/slides.tsx`. Slides waiting on Euronet material are `draft: true` and show a dashed
+  "Content to come" box.
+- **Offline:** `npm run build` also produces `euronet-deck.html` (about 1.2 MB). It's the whole deck in
+  one file, with the single-file card app packed inside for the live slides. It opens from disk and
+  makes no network requests.
 
 ## Booth behavior
 
