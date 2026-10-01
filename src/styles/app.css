@@ -82,7 +82,6 @@ body{
 .cardface .cardtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:relative;z-index:2}
 .cardface .copartner{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
 .cardface .cplogo{display:flex;align-items:center;gap:7px}
-.cardface .cplogo .astar,.cardface .cplogo .casa-arch{width:19px;height:19px;flex:none}
 .cardface .copartner .cpn{font-family:"Bricolage Grotesque Variable","Bricolage Grotesque";font-weight:600;font-size:15px;letter-spacing:-.01em;line-height:1.12}
 .cardface .copartner .cps{font-family:"Inter Variable","Inter";font-weight:500;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.72;margin-top:5px}
 .cardface .cardmid{display:flex;flex-direction:column;gap:12px;position:relative;z-index:2}

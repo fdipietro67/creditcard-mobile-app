@@ -4,8 +4,9 @@ A themeable Buy Now, Pay Later cardholder app for the booth. It includes a Build
 brands the app for a client and gets a short link, a QR code and a printable sign. The app is ported
 from `bnpl-cobrand-prototype.html`.
 
-It is an **illustrative concept only**. The default partners (Altair, Casa) are fictional and all
-figures are sample data.
+By default (no client branding) the app shows a **Visa Signature** card for Money20/20. A client
+config from the Builder or a link replaces it with the client's own card. It is an **illustrative
+concept only**: balances, merchants and figures are sample data.
 
 | Route | What it is |
 | --- | --- |
@@ -48,7 +49,7 @@ Optional settings:
 
 ```ts
 type DemoConfig = {
-  clientName?: string;      // "Acme Airways" -> "Acme Airways Card"; hides the partner switch
+  clientName?: string;      // "Acme Airways" -> "Acme Airways Card"; replaces the Visa Signature card
   cardholderName?: string;  // printed on the card
   accent?: string;          // #RRGGBB, drives the accent, soft tints and card gradient
   cardImage?: string|null;  // data:image/(png|jpeg|webp|gif) or https URL; replaces the card face
@@ -61,16 +62,23 @@ The app picks its config from the first source that has one:
 0. `window.__DEMO_CONFIG__`, baked into a downloaded offline file.
 1. `?c=<id>`: fetched from `/api/c/:id`. It is cached for offline use. If the lookup fails, the app falls back to the next source.
 2. URL params: `?client=…&accent=…&holder=…&rewards=…`
-3. Default: the fictional Altair / Casa partners, with the partner switch.
+3. Default: the Money20/20 Visa Signature card.
 
 All input is sanitized by `src/config/schema.ts`, which the app and the Worker share. The Builder's
 preview also pushes configs live with `postMessage({ __demoCfg: true, cfg })` (same origin only).
+
+## Visa Signature card face
+
+The default card is drawn in code: dark navy, chip, contactless arcs, and "VISA / Signature" at
+bottom right. Any client branding (name, color or card image) replaces it. The Visa wordmark is a
+trademark. Drop Visa's approved artwork in as `src/assets/brand/visa-logo.svg` (or `.png`) and
+rebuild, and the card uses it automatically. Until then it shows a plain typeset placeholder.
 
 ## Booth behavior
 
 - **Offline:** after the first load, the service worker serves the app shell, fonts and logos. Short-link configs are cached once opened. Fonts are self-hosted, so there is no Google Fonts dependency.
 - **Idle reset:** after 90 seconds without input, the demo returns to a clean home screen. Use `?idle=<seconds>` to change this, or `?idle=0` to turn it off. The Builder preview never resets.
-- **One-tap reset:** the **Reset** button sits next to the partner switch on a tablet or desktop.
+- **One-tap reset:** the **Reset** button sits above the phone on a tablet or desktop.
 - **Phones:** the phone frame and narration are hidden. Touch targets are at least 44px, and hover effects only apply on devices with a pointer.
 
 ## Sharing options in the Builder

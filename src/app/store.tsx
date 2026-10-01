@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { OFFERS, firstDue, planMath, stmtDate } from "../lib/bnpl";
-import { BASE_PARTNERS, brandPartner, type Partner, type PartnerKey } from "./partners";
+import { DEFAULT_CARD, brandPartner, type Partner } from "./partners";
 import { useDemoConfig } from "../config/DemoConfigProvider";
 
 export type View = "home" | "txn" | "split" | "review" | "bill" | "bnpl" | "plandetail";
@@ -35,8 +35,8 @@ type UiState = {
 };
 
 type DataState = {
-  plans: Record<PartnerKey, Plan[]>;
-  splitTxns: Record<PartnerKey, string[]>; // txns already converted → no longer eligible
+  plans: Plan[];
+  splitTxns: string[]; // txns already converted → no longer eligible
 };
 
 function seedPlan(p: Partner): Plan {
@@ -55,25 +55,24 @@ const initialUi = (): UiState => ({
   agreed: false, expanded: null, editingId: null, menu: false, success: null,
 });
 const initialData = (): DataState => ({
-  plans: { altair: [seedPlan(BASE_PARTNERS.altair)], casa: [seedPlan(BASE_PARTNERS.casa)] },
-  splitTxns: { altair: [], casa: [] },
+  plans: [seedPlan(DEFAULT_CARD)],
+  splitTxns: [],
 });
 
 export type PlanSubject = { amount: number; title: string; sub: string; g: string; initial: string };
 
 function useAppState() {
   const { config } = useDemoConfig();
-  const [partnerKey, setPartnerKey] = useState<PartnerKey>("altair");
   const [ui, setUi] = useState<UiState>(initialUi);
   const [data, setData] = useState<DataState>(initialData);
   const [resetNonce, setResetNonce] = useState(0);
 
   const partner = useMemo(() => {
-    const p = brandPartner(BASE_PARTNERS[partnerKey], config);
-    const done = data.splitTxns[partnerKey];
+    const p = brandPartner(DEFAULT_CARD, config);
+    const done = data.splitTxns;
     return { ...p, txns: p.txns.map((t) => (done.includes(t.id) ? { ...t, elig: false } : t)) };
-  }, [partnerKey, config, data.splitTxns]);
-  const plans = data.plans[partnerKey];
+  }, [config, data.splitTxns]);
+  const plans = data.plans;
 
   const patch = useCallback((u: Partial<UiState>) => setUi((s) => ({ ...s, ...u })), []);
   const nav = useCallback((view: View) => patch({ view }), [patch]);
@@ -97,28 +96,20 @@ function useAppState() {
       paid: 0, start: firstDue(),
     };
     setData((d) => ({
-      plans: { ...d.plans, [partnerKey]: [np, ...d.plans[partnerKey]] },
-      splitTxns: !isStmt && ui.txn
-        ? { ...d.splitTxns, [partnerKey]: [...d.splitTxns[partnerKey], ui.txn] }
-        : d.splitTxns,
+      plans: [np, ...d.plans],
+      splitTxns: !isStmt && ui.txn ? [...d.splitTxns, ui.txn] : d.splitTxns,
     }));
     return np;
   };
 
-  const switchPartner = (k: PartnerKey) => {
-    setPartnerKey(k);
-    patch({ view: "home", menu: false });
-  };
-
   /** Full demo reset: fresh data, home screen, default partner. */
   const reset = useCallback(() => {
-    setPartnerKey("altair");
     setUi(initialUi());
     setData(initialData());
     setResetNonce((n) => n + 1);
   }, []);
 
-  return { resetNonce, config, partnerKey, partner, plans, ui, patch, nav, subject, createPlan, switchPartner, reset };
+  return { resetNonce, config, partner, plans, ui, patch, nav, subject, createPlan, reset };
 }
 
 export type AppCtx = ReturnType<typeof useAppState>;

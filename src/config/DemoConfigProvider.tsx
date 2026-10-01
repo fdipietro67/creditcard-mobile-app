@@ -21,7 +21,7 @@ const CACHE_KEY = "bnpl-demo:last-short-config";
  *   0. window.__DEMO_CONFIG__ baked into a downloaded single-file build
  *   1. ?c=<shortId> resolved via the Worker/KV
  *   2. URL params (?client=&accent=&holder=&rewards=)
- *   3. bundled default (null → fictional Altair/Casa partners with the switch)
+ *   3. bundled default (null → the Money20/20 Visa Signature card)
  * A parent window (the Builder's live preview) can push a config at any time with
  * postMessage({ __demoCfg: true, cfg }).
  */

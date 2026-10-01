@@ -10,7 +10,7 @@ import {
 import { dataUrlBytes, downscaleImage } from "./image";
 import { downloadBrandedHtml, slug } from "./standalone";
 
-const PRESETS = ["#4C6FFF", "#E4002B", "#0B7A5C", "#C05A38", "#7A3CE0", "#0E1726", "#00A3AD", "#F28C00"];
+const PRESETS = ["#1434CB", "#E4002B", "#0B7A5C", "#C05A38", "#7A3CE0", "#0E1726", "#00A3AD", "#F28C00"];
 
 // Base for links/QR codes. In production this is the Worker's own origin; override with
 // VITE_PUBLIC_ORIGIN when building somewhere other than where attendees will open links.
@@ -20,7 +20,9 @@ const PUBLIC_ORIGIN: string =
 type Draft = { clientName: string; cardholderName: string; rewardsLabel: string; accent: string; cardImage: string | null };
 type Recent = { id: string; clientName: string; created: string };
 
-const EMPTY: Draft = { clientName: "", cardholderName: "", rewardsLabel: "", accent: "#4C6FFF", cardImage: null };
+// accent "" = not chosen → the app keeps its default (Visa Signature) look until a color is picked.
+const DEFAULT_ACCENT = "#1434CB";
+const EMPTY: Draft = { clientName: "", cardholderName: "", rewardsLabel: "", accent: "", cardImage: null };
 
 // localStorage is a rep convenience only (last draft, recent links, builder key) — always guarded.
 const store = {
@@ -197,18 +199,18 @@ export default function Builder() {
               <input
                 className="inp"
                 value={draft.rewardsLabel}
-                placeholder="AltairMiles"
+                placeholder="AcmeMiles"
                 maxLength={40}
                 onChange={(e) => update({ rewardsLabel: e.target.value })}
               />
             </Field>
-            <Field label="Accent color">
+            <Field label="Accent color" hint="Leave empty to keep the default Visa Signature card.">
               <div className="flex items-center gap-3">
                 <input
                   type="color"
                   aria-label="Pick accent color"
                   className="h-11 w-14 cursor-pointer rounded-xl border border-[#E7ECF3] bg-white p-1"
-                  value={normalizeHex(draft.accent) ?? "#4C6FFF"}
+                  value={normalizeHex(draft.accent) ?? DEFAULT_ACCENT}
                   onChange={(e) => {
                     update({ accent: e.target.value.toUpperCase() });
                     setHexText(e.target.value.toUpperCase());
@@ -217,12 +219,14 @@ export default function Builder() {
                 <input
                   className="inp font-mono uppercase"
                   value={hexText}
+                  placeholder="Default"
                   maxLength={7}
                   aria-label="Accent hex"
                   onChange={(e) => {
                     setHexText(e.target.value);
                     const h = normalizeHex(e.target.value);
                     if (h) update({ accent: h });
+                    else if (!e.target.value.trim()) update({ accent: "" });
                   }}
                 />
               </div>

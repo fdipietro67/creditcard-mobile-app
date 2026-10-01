@@ -101,7 +101,7 @@ function SuccessModal() {
 }
 
 function Stage() {
-  const { partner, partnerKey, config, ui, patch, switchPartner, reset, resetNonce } = useApp();
+  const { partner, ui, patch, reset, resetNonce } = useApp();
   const { preview } = useDemoConfig();
   const [idleSeconds] = useState(() => (preview ? 0 : idleSecondsFromUrl()));
   useIdleReset(idleSeconds, reset);
@@ -114,13 +114,11 @@ function Stage() {
     document.title = partner.product;
   }, [partner.accent, partner.accentSoft, partner.card, partner.product]);
 
-  const singleClient = !!config?.clientName;
-
   return (
     <div className="stage">
       <div className="brief">
         <div className="kicker">Experience 2 · Post-purchase</div>
-        <h1>Defer a purchase <em>{partner.briefWord}</em></h1>
+        <h1>Defer a purchase <em>after you've made it</em></h1>
         <p className="lede">
           The cardholder app, modeled on the live CoreCard card experience: a purchase that's already posted can be
           split into fixed monthly payments — from the transaction, or from the BNPL menu.
@@ -132,31 +130,19 @@ function Stage() {
           <li><strong>Plans you can track.</strong> Active plans, schedules, and progress live in the BNPL hub.</li>
         </ul>
         <div className="foot">
-          <b>Illustrative only.</b> Cobrand partners are fictional; merchants and figures are sample data. Not a live product or a rate offer.
+          <b>Illustrative only.</b> Balances, merchants and figures are sample data. Not a live product or a rate offer.
         </div>
       </div>
 
       <div className="phone-wrap">
         {!preview && (
           <div className="controls">
-            {!singleClient && <span className="cap">Cobrand partner</span>}
-            <div className="controls-row">
-              {!singleClient && (
-                <div className="switch">
-                  {(["altair", "casa"] as const).map((k) => (
-                    <button key={k} className={partnerKey === k ? "on" : ""} onClick={() => switchPartner(k)}>
-                      {k === "altair" ? "Altair" : "Casa"}
-                    </button>
-                  ))}
-                </div>
-              )}
-              <button className="resetbtn" onClick={reset} aria-label="Reset demo" title="Reset demo">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Reset
-              </button>
-            </div>
+            <button className="resetbtn" onClick={reset} aria-label="Reset demo" title="Reset demo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Reset
+            </button>
           </div>
         )}
         <div className="phone">

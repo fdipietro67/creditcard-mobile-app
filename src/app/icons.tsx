@@ -1,15 +1,27 @@
-import type { PartnerKey } from "./partners";
+// Official network artwork is a drop-in: put Visa's approved logo at src/assets/brand/visa-logo.svg
+// (or .png) and rebuild. Until then a plain typeset placeholder is shown.
+const brandFiles = import.meta.glob("../assets/brand/visa-logo.{svg,png}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+const VISA_LOGO_URL: string | undefined = Object.values(brandFiles)[0];
 
-export const PartnerMark = ({ kind }: { kind: PartnerKey }) =>
-  kind === "altair" ? (
-    <svg className="astar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 0.5 13.6 10.4 22.5 12 13.6 13.6 12 23.5 10.4 13.6 1.5 12 10.4 10.4Z" />
-    </svg>
+export const VisaMark = () =>
+  VISA_LOGO_URL ? (
+    <img src={VISA_LOGO_URL} alt="Visa" className="visa-logo" />
   ) : (
-    <svg className="casa-arch" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M4 21 L4 11 A8 8 0 0 1 20 11 L20 21 L15 21 L15 15 A3 3 0 0 0 9 15 L9 21 Z" />
-    </svg>
+    <span className="visa-word" aria-label="Visa">VISA</span>
   );
+
+/** Generic contactless indicator (plain arcs). */
+export const ContactlessIco = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+    <path d="M8 8.5a5 5 0 0 1 0 7" />
+    <path d="M11.5 6a8.5 8.5 0 0 1 0 12" />
+    <path d="M15 3.5a12 12 0 0 1 0 17" />
+  </svg>
+);
 
 export const BnplArt = () => (
   <svg viewBox="0 0 128 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
