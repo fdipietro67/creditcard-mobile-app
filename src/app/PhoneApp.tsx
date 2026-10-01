@@ -2,6 +2,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { fmt, mmdd } from "../lib/bnpl";
 import { MenuIcons, SearchIco } from "./icons";
 import { AppStateProvider, useApp, type View } from "./store";
+import { idleSecondsFromUrl, useIdleReset } from "./useIdleReset";
+import { useDemoConfig } from "../config/DemoConfigProvider";
 import {
   BillView, BnplView, HomeView, PlanDetailView, ReviewView, SplitView, TxnDetailView,
 } from "./views";
@@ -99,7 +101,10 @@ function SuccessModal() {
 }
 
 function Stage() {
-  const { partner, partnerKey, config, ui, patch, switchPartner } = useApp();
+  const { partner, partnerKey, config, ui, patch, switchPartner, reset, resetNonce } = useApp();
+  const { preview } = useDemoConfig();
+  const [idleSeconds] = useState(() => (preview ? 0 : idleSecondsFromUrl()));
+  useIdleReset(idleSeconds, reset);
 
   useEffect(() => {
     const r = document.documentElement.style;
@@ -132,15 +137,25 @@ function Stage() {
       </div>
 
       <div className="phone-wrap">
-        {!singleClient && (
+        {!preview && (
           <div className="controls">
-            <span className="cap">Cobrand partner</span>
-            <div className="switch">
-              {(["altair", "casa"] as const).map((k) => (
-                <button key={k} className={partnerKey === k ? "on" : ""} onClick={() => switchPartner(k)}>
-                  {k === "altair" ? "Altair" : "Casa"}
-                </button>
-              ))}
+            {!singleClient && <span className="cap">Cobrand partner</span>}
+            <div className="controls-row">
+              {!singleClient && (
+                <div className="switch">
+                  {(["altair", "casa"] as const).map((k) => (
+                    <button key={k} className={partnerKey === k ? "on" : ""} onClick={() => switchPartner(k)}>
+                      {k === "altair" ? "Altair" : "Casa"}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <button className="resetbtn" onClick={reset} aria-label="Reset demo" title="Reset demo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Reset
+              </button>
             </div>
           </div>
         )}
@@ -167,7 +182,7 @@ function Stage() {
                 <button className="ai dots" aria-label="Menu" onClick={() => patch({ menu: !ui.menu })}>⋯</button>
               </div>
             </div>
-            <ViewHost />
+            <ViewHost key={resetNonce} />
             <div className="homebar"><i /></div>
             <Menu />
             <SuccessModal />

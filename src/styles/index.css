@@ -1,5 +1,8 @@
 @import "tailwindcss";
-@import "./app.css";
+@import "./fonts.css";
+/* Layered so Tailwind utilities (Builder) win over the prototype's `*{margin:0;padding:0}` reset. */
+@import "./app.css" layer(components);
+@import "./builder.css";
 
 @theme {
   --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif;
@@ -35,3 +38,13 @@
   .homebar i { display: none; }
   .menu-panel { top: calc(env(safe-area-inset-top) + 56px); }
 }
+
+/* Rep controls: partner switch + one-tap reset (tablet/desktop only). */
+.controls-row { display: flex; align-items: center; gap: 8px; }
+.resetbtn {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px;
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px;
+  font: inherit; font-size: 12px; font-weight: 600; color: var(--ink-2); cursor: pointer;
+}
+.resetbtn:active { transform: scale(.97); }
+.switch button { min-height: 38px; }

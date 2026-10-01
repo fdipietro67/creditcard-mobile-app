@@ -1,21 +1,32 @@
-import { StrictMode } from "react";
+import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
-import "@fontsource-variable/bricolage-grotesque/opsz.css";
-import "@fontsource-variable/inter";
 import "./styles/index.css";
 import { DemoConfigProvider, useDemoConfig } from "./config/DemoConfigProvider";
 import PhoneApp from "./app/PhoneApp";
+import { registerServiceWorker } from "./pwa";
 
-function Root() {
+const Builder = lazy(() => import("./builder/Builder"));
+
+function DemoRoot() {
   const { ready } = useDemoConfig();
   // While a ?c= short link resolves, show nothing rather than flashing the default brand.
   return ready ? <PhoneApp /> : null;
 }
 
+const isBuilder = /^\/builder\/?$/.test(window.location.pathname);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <DemoConfigProvider>
-      <Root />
-    </DemoConfigProvider>
+    {isBuilder ? (
+      <Suspense fallback={null}>
+        <Builder />
+      </Suspense>
+    ) : (
+      <DemoConfigProvider>
+        <DemoRoot />
+      </DemoConfigProvider>
+    )}
   </StrictMode>,
 );
+
+registerServiceWorker();

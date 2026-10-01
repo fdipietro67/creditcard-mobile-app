@@ -1,0 +1,29 @@
+/* Builder-only component classes (the rest of the Builder is Tailwind utilities). */
+@layer components {
+  .inp {
+    @apply block min-h-11 w-full rounded-xl border border-[#E7ECF3] bg-white px-3.5 text-[15px] text-ink outline-none;
+    @apply focus:border-accent focus:ring-4 focus:ring-accent-soft;
+  }
+  .btn-primary {
+    @apply flex min-h-12 w-full items-center justify-center rounded-2xl bg-ink px-5 text-[15px] font-semibold text-white;
+    @apply disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-secondary {
+    @apply inline-flex min-h-11 items-center justify-center rounded-xl border border-[#E7ECF3] bg-white px-4 text-sm font-semibold text-ink;
+    @apply disabled:cursor-not-allowed disabled:opacity-60;
+  }
+}
+.qr svg { width: 100%; height: 100%; display: block; }
+
+.print-only { display: none; }
+@media print {
+  @page { size: letter portrait; margin: 0.6in; }
+  .no-print { display: none !important; }
+  html, body, .builder { background: #fff !important; min-height: 0; }
+  .print-only { display: flex; }
+  .print-sign { flex-direction: column; align-items: center; text-align: center; gap: 18px; padding-top: 0.4in; color: #0E1726; }
+  .print-sign h1 { font-family: "Bricolage Grotesque Variable", sans-serif; font-size: 46px; font-weight: 700; letter-spacing: -0.02em; }
+  .print-sign .lead { font-size: 22px; color: #42506A; }
+  .print-sign .url { font-family: ui-monospace, monospace; font-size: 14px; color: #42506A; }
+  .print-sign .fine { font-size: 11px; color: #7A88A0; margin-top: 24px; }
+}

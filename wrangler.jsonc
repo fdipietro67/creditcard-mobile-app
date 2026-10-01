@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "bnpl-card-demo",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-30",
+  "assets": {
+    "directory": "./dist/",
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "kv_namespaces": [
+    // Created via the Cloudflare connector. Holds short-link configs (TTL 1 year).
+    { "binding": "CONFIGS", "id": "ab5a2203cf05497fa5f28253861e8eb7" }
+  ],
+  "observability": { "enabled": true }
+  // Optional secret to lock link creation: `npx wrangler secret put BUILDER_KEY`
+}

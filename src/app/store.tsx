@@ -66,6 +66,7 @@ function useAppState() {
   const [partnerKey, setPartnerKey] = useState<PartnerKey>("altair");
   const [ui, setUi] = useState<UiState>(initialUi);
   const [data, setData] = useState<DataState>(initialData);
+  const [resetNonce, setResetNonce] = useState(0);
 
   const partner = useMemo(() => {
     const p = brandPartner(BASE_PARTNERS[partnerKey], config);
@@ -114,9 +115,10 @@ function useAppState() {
     setPartnerKey("altair");
     setUi(initialUi());
     setData(initialData());
+    setResetNonce((n) => n + 1);
   }, []);
 
-  return { config, partnerKey, partner, plans, ui, patch, nav, subject, createPlan, switchPartner, reset };
+  return { resetNonce, config, partnerKey, partner, plans, ui, patch, nav, subject, createPlan, switchPartner, reset };
 }
 
 export type AppCtx = ReturnType<typeof useAppState>;
