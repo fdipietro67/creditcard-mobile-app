@@ -69,10 +69,11 @@ preview also pushes configs live with `postMessage({ __demoCfg: true, cfg })` (s
 
 ## Visa Signature card face
 
-The default card is drawn in code: dark navy, chip, contactless arcs, and "VISA / Signature" at
-bottom right. Any client branding (name, color or card image) replaces it. The Visa wordmark is a
-trademark. Drop Visa's approved artwork in as `src/assets/brand/visa-logo.svg` (or `.png`) and
-rebuild, and the card uses it automatically. Until then it shows a plain typeset placeholder.
+The default card is drawn in code: dark navy, chip, contactless arcs, and the official Visa logo
+(reversed to white) with "Signature" at bottom right. Any client branding (name, color or card
+image) replaces it. The logo comes from Visa's CDN and lives in `src/assets/brand/visa-logo.png`.
+Visa permits its use on card mockups and prototypes. To use a higher-resolution version from Visa's
+brand resources, add `visa-logo.svg` there and rebuild; it takes precedence over the PNG.
 
 ## Booth behavior
 

@@ -1,11 +1,11 @@
-// Official network artwork is a drop-in: put Visa's approved logo at src/assets/brand/visa-logo.svg
-// (or .png) and rebuild. Until then a plain typeset placeholder is shown.
+// Official Visa logo (src/assets/brand/). An SVG, if added, takes precedence over the PNG.
 const brandFiles = import.meta.glob("../assets/brand/visa-logo.{svg,png}", {
   eager: true,
   query: "?url",
   import: "default",
 }) as Record<string, string>;
-const VISA_LOGO_URL: string | undefined = Object.values(brandFiles)[0];
+const VISA_LOGO_URL: string | undefined =
+  Object.entries(brandFiles).find(([k]) => k.endsWith(".svg"))?.[1] ?? Object.values(brandFiles)[0];
 
 export const VisaMark = () =>
   VISA_LOGO_URL ? (
