@@ -1,7 +1,10 @@
-# BNPL Cardholder App — Money20/20 demo
+# Card App Demo — Money20/20
 
-A themeable Buy Now, Pay Later cardholder app for the booth. It includes a Builder page where a rep
-brands the app for a client and gets a short link, a QR code and a printable sign. The app is ported
+A themeable, fully working cardholder app for the booth: home, activity and search, statements
+(with a statement page), payments and AutoPay, cash back rewards and redemption, card controls,
+account services, alerts, documents, and Buy Now, Pay Later. Every screen is fed by one ledger
+(`src/app/account.ts`), so balances, statements, payments and plans always agree. A Builder page lets
+a rep brand it for a client and get a short link, QR code and printable sign. It was originally ported
 from `bnpl-cobrand-prototype.html`.
 
 By default (no client branding) the app shows a black **Money20/20 Visa Signature** card. A client
@@ -36,7 +39,7 @@ The KV namespace `BNPL_DEMO_CONFIGS` already exists in the Cloudflare account, a
 
 ```bash
 npx wrangler login        # once
-npm run deploy            # builds, then deploys app + API to https://bnpl-card-demo.<subdomain>.workers.dev
+npm run deploy            # builds, then deploys app + API to https://euronet-money2020.<subdomain>.workers.dev
 ```
 
 Optional settings:

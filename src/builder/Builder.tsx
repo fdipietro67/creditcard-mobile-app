@@ -164,7 +164,7 @@ export default function Builder() {
         <div className="flex items-center gap-3">
           <img src="/favicon.svg" alt="" className="size-9 rounded-[10px]" />
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[.14em] text-highlight">BNPL card demo</div>
+            <div className="text-[11px] font-semibold uppercase tracking-[.14em] text-highlight">Card app demo</div>
             <h1 className="font-display text-xl font-bold tracking-tight">Demo Builder</h1>
           </div>
         </div>

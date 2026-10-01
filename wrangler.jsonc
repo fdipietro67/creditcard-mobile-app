@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "bnpl-card-demo",
+  "name": "euronet-money2020",
   "main": "./worker/index.ts",
   "compatibility_date": "2026-09-30",
   "assets": {

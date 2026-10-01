@@ -53,24 +53,12 @@ export const fmt = (n: number) =>
   "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 export const fmt0 = (n: number) => "$" + Math.round(n).toLocaleString("en-US");
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-export const firstDue = () => {
-  const t = new Date();
-  return new Date(t.getFullYear(), t.getMonth() + 1, 15);
-};
-export const addMonths = (d: Date, m: number) => {
-  const x = new Date(d);
-  x.setMonth(x.getMonth() + m);
-  return x;
-};
-export const dLabel = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}`;
-export const mmdd = (d: Date) =>
-  `${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}/${d.getFullYear()}`;
-export const stmtDate = () => {
-  const t = new Date();
-  const d = new Date(t.getFullYear(), t.getMonth(), 0);
-  return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-};
+export { addMonths, dLabel, mmdd } from "./calendar";
+import { closingDate, dLong, nextDueDate } from "./calendar";
+/** A new plan's first installment is billed on the next statement. */
+export const firstDue = () => nextDueDate();
+/** Closing date of the latest statement. */
+export const stmtDate = () => dLong(closingDate(0));
 export const ordSuffix = (n: number) => {
   const s = ["th", "st", "nd", "rd"];
   const v = n % 100;

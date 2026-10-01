@@ -2,6 +2,7 @@
 @import "./fonts.css";
 /* Layered so Tailwind utilities (Builder) win over the prototype's `*{margin:0;padding:0}` reset. */
 @import "./app.css" layer(components);
+@import "./screens.css" layer(components);
 @import "./builder.css";
 
 @theme {

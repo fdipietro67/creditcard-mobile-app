@@ -1,141 +1,12 @@
-import type { ReactNode } from "react";
 import {
   OFFERS, addMonths, amortSchedule, aprLabel, dLabel, firstDue, fmt, fmt0, mmdd, ordSuffix, planMath, stmtDate,
-} from "../lib/bnpl";
-import { CardFace } from "./CardFace";
-import { BnplArt, CheckIco, ChevL, ChevR, ClockIco, MinusIco, PlusIco } from "./icons";
-import { useApp, type View } from "./store";
-import type { Txn } from "./partners";
-
-function Back({ to, children }: { to: View; children: ReactNode }) {
-  const { nav } = useApp();
-  return (
-    <div className="vhead">
-      <button className="back" onClick={() => nav(to)} aria-label="Back">
-        <ChevL />
-      </button>
-      {children}
-    </div>
-  );
-}
-
-function TxnRow({ t }: { t: Txn }) {
-  const { patch } = useApp();
-  return (
-    <div className="txn" role="button" onClick={() => patch({ txn: t.id, view: "txn" })}>
-      <div className="gl" style={{ background: t.g }}>{t.glyph ?? t.m[0]}</div>
-      <div className="mid">
-        <div className="m">{t.m}</div>
-        <div className="s">{t.loc}</div>
-        {t.elig && <span className="tag">◇ Eligible to split</span>}
-      </div>
-      <div className="rt">
-        <div>
-          <div className="amt num">{fmt(t.amt)}</div>
-          <div className="pct">{t.pct} back</div>
-        </div>
-        <ChevR className="chev" />
-      </div>
-    </div>
-  );
-}
-
-export function HomeView() {
-  const { partner: p, plans, nav } = useApp();
-  const util = Math.min(100, Math.round((p.balance / p.limit) * 100));
-  const rem = plans.reduce((s, pl) => s + pl.monthly * (pl.months - pl.paid), 0);
-  return (
-    <>
-      <CardFace p={p} />
-      <div className="credit">
-        <div className="r1">
-          <div>
-            <div className="lbl">Available credit</div>
-            <div className="av num">{fmt(p.available)}</div>
-          </div>
-          <a className="detail">Balance detail →</a>
-        </div>
-        <div className="util"><i style={{ width: `${util}%` }} /></div>
-        <div className="r2">
-          <span>Current balance <b className="num">{fmt(p.balance)}</b></span>
-          <span>Limit <b className="num">{fmt0(p.limit)}</b></span>
-        </div>
-      </div>
-      <div className="row2">
-        <div className="tile">
-          <div className="lbl">Monthly activity</div>
-          <div className="bars">
-            {p.activity.map((v, i) => (
-              <i key={i} className={i === p.activity.length - 1 ? "hot" : ""} style={{ height: `${Math.round(v * 100)}%` }} />
-            ))}
-          </div>
-        </div>
-        <div className="tile due">
-          <div className="lbl">Amount due</div>
-          <div className="amt num">{fmt(p.balance)}</div>
-          <div className="sub">Due in {p.dueDays} days</div>
-          <button className="pay" onClick={() => nav("bill")}>Pay</button>
-        </div>
-      </div>
-      <div className="bnplsum" role="button" onClick={() => nav("bnpl")}>
-        <div className="ic"><ClockIco size={20} stroke="#fff" /></div>
-        <div className="t">
-          <div className="a">Buy Now, Pay Later</div>
-          <div className="b">
-            {plans.length
-              ? `${plans.length} active plan${plans.length > 1 ? "s" : ""} · ${fmt(rem)} remaining`
-              : "Split a purchase into fixed monthly payments"}
-          </div>
-        </div>
-        <div className="pill">Open</div>
-      </div>
-      <div className="sechead">
-        <h3>Recent transactions</h3>
-        <a onClick={() => nav("bnpl")}>Split a purchase</a>
-      </div>
-      {p.txns.map((t) => <TxnRow key={t.id} t={t} />)}
-    </>
-  );
-}
-
-export function TxnDetailView() {
-  const { partner: p, ui, patch } = useApp();
-  const t = p.txns.find((x) => x.id === ui.txn)!;
-  return (
-    <>
-      <Back to="home"><h2>Transaction</h2></Back>
-      <div className="tdcard">
-        <div className="gl" style={{ background: t.g }}>{t.glyph ?? t.m[0]}</div>
-        <div className="m">{t.m}</div>
-        <div className="amt num">{fmt(t.amt)}</div>
-        <div className="s">{t.loc} · Today</div>
-      </div>
-      <div className="tdmeta">
-        <div className="r"><span className="k">Card</span><span className="v">{p.product} {p.pan.slice(-4)}</span></div>
-        <div className="r"><span className="k">Rewards earned</span><span className="v">{t.pct} back</span></div>
-        <div className="r"><span className="k">Status</span><span className="v">Posted</span></div>
-      </div>
-      {t.elig ? (
-        <>
-          <div className="splitcard">
-            <div className="h"><span className="ic"><ClockIco /></span>Split into monthly payments</div>
-            <p>Move this {fmt0(t.amt)} purchase off your revolving balance and pay it in equal monthly installments — some terms at 0% APR.</p>
-          </div>
-          <button className="cta" onClick={() => patch({ planSource: "txn", offer: null, previewOpen: false, view: "split" })}>
-            Set up a plan
-          </button>
-        </>
-      ) : (
-        <div className="notelig">
-          Purchases under the plan minimum aren't eligible to split. Larger purchases show a “Set up a plan” option here.
-        </div>
-      )}
-    </>
-  );
-}
+} from "../../lib/bnpl";
+import { BnplArt, CheckIco, MinusIco, PlusIco } from "../icons";
+import { useApp } from "../store";
+import { Header } from "../ui";
 
 export function SplitView() {
-  const { ui, patch, subject } = useApp();
+  const { ui, patch, subject, nav } = useApp();
   const subj = subject();
   const stmt = ui.planSource === "statement";
   const P = subj.amount;
@@ -143,7 +14,7 @@ export function SplitView() {
   const m = sel != null ? planMath(P, OFFERS[sel]) : null;
   return (
     <>
-      <Back to={stmt ? "bnpl" : "txn"}><h2>BNPL</h2></Back>
+      <Header title="BNPL" />
       {stmt ? (
         <>
           <div className="stmt-balance">
@@ -204,7 +75,11 @@ export function SplitView() {
           })}
         </div>
       )}
-      <button className="cta" disabled={sel == null} onClick={() => sel != null && patch({ agreed: false, view: "review" })}>
+      <button className="cta" disabled={sel == null} onClick={() => {
+          if (sel == null) return;
+          patch({ agreed: false });
+          nav("review");
+        }}>
         Continue
       </button>
     </>
@@ -218,7 +93,7 @@ export function ReviewView() {
   const m = planMath(subj.amount, o);
   return (
     <>
-      <Back to="split"><div><div className="rv-ey">BNPL</div><h2>Review &amp; Confirm</h2></div></Back>
+      <Header eyebrow="BNPL" title="Review & Confirm" />
       <div className="rv-total">
         <div className="tl">TOTAL AMOUNT</div>
         <div className="tv num">{fmt(m.total)}</div>
@@ -248,23 +123,13 @@ export function ReviewView() {
   );
 }
 
-export function BillView() {
-  const { partner: p, nav } = useApp();
-  return (
-    <div className="cw">
-      <div className="checkwrap"><CheckIco size={34} stroke="var(--accent)" w={2.5} /></div>
-      <h2>Payment scheduled</h2>
-      <p>{fmt(p.balance)} will be paid from your linked account. Prefer to spread it out? Split an eligible purchase instead.</p>
-      <button className="cta" style={{ marginTop: 22 }} onClick={() => nav("home")}>Back to home</button>
-    </div>
-  );
-}
-
 export function BnplView() {
-  const { partner: p, plans, patch } = useApp();
+  const { partner: p, plans, patch, nav } = useApp();
+  const stmtPlan = plans.find((x) => x.fromStatement);
+  const eligible = stmtPlan ? 0 : p.statementEligible;
   return (
     <>
-      <Back to="home"><h2>Buy Now, Pay Later</h2></Back>
+      <Header title="Buy Now, Pay Later" />
       <div className="bnpl-hero">
         <div className="art"><BnplArt /></div>
         <div className="copy">
@@ -275,10 +140,21 @@ export function BnplView() {
       <div className="create-title">Create a BNPL plan</div>
       <div className="stmt">
         <div className="l">Statement Purchase Balance</div>
-        <div className="r"><div className="a num">{fmt(p.statementEligible)}</div><div className="e">Eligible amount</div></div>
+        <div className="r"><div className="a num">{fmt(eligible)}</div><div className="e">Eligible amount</div></div>
       </div>
-      <div className="stmt-note">Pay off your statement purchase balance in equal monthly installments.</div>
-      <button className="proceed" onClick={() => patch({ planSource: "statement", offer: null, previewOpen: false, view: "split" })}>
+      <div className="stmt-note">
+        {stmtPlan
+          ? "Your last statement's purchases are already in a plan. New purchases become eligible on your next statement."
+          : "Pay off your statement purchase balance in equal monthly installments."}
+      </div>
+      <button
+        className="proceed"
+        disabled={!!stmtPlan}
+        onClick={() => {
+          patch({ planSource: "statement", offer: null, previewOpen: false });
+          nav("split");
+        }}
+      >
         Proceed
       </button>
       <div className="subhead">Active plans</div>
@@ -290,7 +166,10 @@ export function BnplView() {
           const done = pl.paid >= pl.months;
           return (
             <div key={pl.id} className="planrow" role="button"
-              onClick={() => patch({ editingId: pl.id, expanded: null, view: "plandetail" })}>
+              onClick={() => {
+                patch({ editingId: pl.id, expanded: null });
+                nav("plandetail");
+              }}>
               <div className="ph">
                 <div>
                   <div className="m">{pl.m}</div>
@@ -319,13 +198,13 @@ export function BnplView() {
 export function PlanDetailView() {
   const { plans, ui, patch } = useApp();
   const pl = plans.find((x) => x.id === ui.editingId);
-  if (!pl) return <Back to="bnpl"><h2>Installment Schedule</h2></Back>;
+  if (!pl) return <Header title="Installment Schedule" />;
   const m = planMath(pl.principal, { months: pl.months, apr: pl.apr, feeRate: pl.feeRate || 0 });
   const interestLine = pl.feeRate > 0 ? `( Includes monthly interest of ${(pl.feeRate * 100).toFixed(2)}% )` : "( 0% APR · no interest )";
   const sched = amortSchedule(pl.principal, pl.monthly, pl.months);
   return (
     <>
-      <Back to="bnpl"><div><div className="rv-ey">BNPL</div><h2>Installment Schedule</h2></div></Back>
+      <Header eyebrow="BNPL" title="Installment Schedule" />
       <div className="rv-total sched-box">
         <div className="isl">Principal Amount</div>
         <div className="isv num">{fmt(pl.principal)}</div>

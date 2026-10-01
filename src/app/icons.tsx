@@ -105,3 +105,46 @@ export const MenuIcons = {
     <svg {...s}><path d="M6 3h8l4 4v14H6V3Z" /><path d="M14 3v4h4M9 13h6M9 17h6" strokeLinecap="round" /></svg>
   ),
 };
+
+// Line icons for the full card app (24px grid, stroke = currentColor).
+const P: Record<string, string> = {
+  home: "M4 11 12 4l8 7v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-9Z",
+  pay: "M3 7h18v12H3zM3 11h18M7 15h4",
+  doc: "M6 3h8l4 4v14H6zM14 3v4h4M9 13h6M9 17h6",
+  star: "m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z",
+  gift: "M3 8h18v5H3zM5 13v8h14v-8M12 8v13M12 8S9 3 6.5 5 8 8 12 8ZM12 8s3-5 5.5-3S16 8 12 8Z",
+  lock: "M6 11h12v10H6zM8 11V8a4 4 0 0 1 8 0v3",
+  unlock: "M6 11h12v10H6zM8 11V8a4 4 0 0 1 7.5-2",
+  globe: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z",
+  cart: "M3 4h2l2.4 11h10.2L20 8H6.2M9 20a1 1 0 1 0 0-.01M17 20a1 1 0 1 0 0-.01",
+  wave: "M8 8.5a5 5 0 0 1 0 7M11.5 6a8.5 8.5 0 0 1 0 12M15 3.5a12 12 0 0 1 0 17",
+  atm: "M4 4h16v7H4zM7 11v9h10v-9M10 15h4",
+  gauge: "M4 17a8 8 0 1 1 16 0M12 13l4-4",
+  wallet: "M4 7h15a1 1 0 0 1 1 1v11H5a1 1 0 0 1-1-1V7Zm0 0 12-3v3M16 13h1",
+  phone: "M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM11 18h2",
+  alert: "M12 3 2 20h20L12 3ZM12 10v4M12 17v.5",
+  user: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21a8 8 0 0 1 16 0",
+  users: "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 7.5M18 14a6 6 0 0 1 4 7",
+  trend: "M3 17 9 11l4 4 8-8M15 7h6v6",
+  plane: "M10.5 21 12 17l5 2v-2l-5-3V8.5a1.5 1.5 0 0 0-3 0V14l-5 3v2l5-2 1.5 4Z",
+  leaf: "M5 19c0-8 5-13 15-14-1 10-6 15-14 15M5 19l7-7",
+  key: "M14 10a4 4 0 1 0-3.5 4L5 19.5V21h2.5v-2h2v-2h2l1-1",
+  bell: "M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6ZM10 20a2 2 0 0 0 4 0",
+  check: "m5 13 4 4L19 7",
+  clock: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 7v5l3.5 2",
+  card: "M3 6h18v12H3zM3 10h18",
+  bank: "M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18",
+  shield: "M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z",
+  download: "M12 4v11M7 10l5 5 5-5M5 20h14",
+  search: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14ZM20 20l-3.5-3.5",
+  mail: "M3 6h18v12H3zM3 7l9 6 9-6",
+  pin: "M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11ZM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
+  more: "M5 12h.01M12 12h.01M19 12h.01",
+  info: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 11v6M12 7.5v.5",
+};
+export type IcoName = keyof typeof P;
+export const Ico = ({ n, size = 18, w = 2 }: { n: string; size?: number; w?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d={P[n] ?? P.info} />
+  </svg>
+);

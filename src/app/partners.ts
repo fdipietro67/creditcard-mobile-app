@@ -9,6 +9,7 @@ export type Txn = {
   amt: number;
   pct: string;
   elig: boolean;
+  daysAgo: number; // posting date, within the current billing cycle
 };
 
 export type Partner = {
@@ -20,17 +21,14 @@ export type Partner = {
   accent: string;
   accentSoft: string;
   rewardsLabel: string;
-  balance: number;
-  available: number;
   limit: number;
   pan: string;
-  dueDays: number;
   statementEligible: number;
   activity: number[];
   txns: Txn[];
   holder?: string;
   cardImage?: string | null;
-  seed: { id: string; m: string; loc: string; g: string; principal: number; months: number; paid: number; monthsAgo: number };
+  seed: { id: string; m: string; loc: string; g: string; principal: number; months: number; paid: number };
 };
 
 // Money20/20 default: a black Money20/20 Visa Signature card. A client config (Builder / link) replaces the
@@ -43,26 +41,23 @@ export const DEFAULT_CARD: Partner = {
   accent: "#1434CB",
   accentSoft: "rgba(20,52,203,.10)",
   rewardsLabel: "",
-  balance: 3284.16,
-  available: 11715.84,
   limit: 15000,
   pan: "•••• •••• •••• 4417",
-  dueDays: 19,
   statementEligible: 985.21,
   activity: [0.34, 0.5, 0.4, 0.62, 0.46, 0.74],
   txns: [
     // Everyday merchants (names only, no logos). Purchases at or above the plan minimum are
     // eligible to split; small everyday spend isn't.
-    { id: "a1", m: "JetBlue", loc: "Flight · JFK→SJU", g: "#0033A0", amt: 1186.4, pct: "3.00%", elig: true },
-    { id: "a2", m: "Lowe's", loc: "Home improvement", g: "#004990", amt: 864.27, pct: "2.00%", elig: true },
-    { id: "a3", m: "Marriott", loc: "Hotel · Orlando", g: "#8A1538", amt: 642.18, pct: "2.00%", elig: true },
-    { id: "a4", m: "Best Buy", loc: "Electronics", g: "#0046BE", amt: 329.99, pct: "1.00%", elig: true },
-    { id: "a5", m: "Whole Foods Market", loc: "Groceries", g: "#00674B", amt: 142.33, pct: "1.00%", elig: false },
-    { id: "a6", m: "The Cheesecake Factory", glyph: "C", loc: "Dining", g: "#8C6D3F", amt: 87.46, pct: "3.00%", elig: false },
-    { id: "a7", m: "Shell", loc: "Fuel", g: "#DD1D21", amt: 54.2, pct: "1.00%", elig: false },
-    { id: "a8", m: "Starbucks", loc: "Coffee", g: "#00704A", amt: 6.85, pct: "3.00%", elig: false },
+    { id: "a1", m: "JetBlue", loc: "Flight · JFK→SJU", g: "#0033A0", amt: 1186.4, pct: "3.00%", elig: true, daysAgo: 0 },
+    { id: "a2", m: "Lowe's", loc: "Home improvement", g: "#004990", amt: 864.27, pct: "2.00%", elig: true, daysAgo: 1 },
+    { id: "a3", m: "Marriott", loc: "Hotel · Orlando", g: "#8A1538", amt: 642.18, pct: "2.00%", elig: true, daysAgo: 2 },
+    { id: "a4", m: "Best Buy", loc: "Electronics", g: "#0046BE", amt: 329.99, pct: "1.00%", elig: true, daysAgo: 4 },
+    { id: "a5", m: "Whole Foods Market", loc: "Groceries", g: "#00674B", amt: 142.33, pct: "1.00%", elig: false, daysAgo: 5 },
+    { id: "a6", m: "The Cheesecake Factory", glyph: "C", loc: "Dining", g: "#8C6D3F", amt: 87.46, pct: "3.00%", elig: false, daysAgo: 6 },
+    { id: "a7", m: "Shell", loc: "Fuel", g: "#DD1D21", amt: 54.2, pct: "1.00%", elig: false, daysAgo: 8 },
+    { id: "a8", m: "Starbucks", loc: "Coffee", g: "#00704A", amt: 6.85, pct: "3.00%", elig: false, daysAgo: 9 },
   ],
-  seed: { id: "seedA", m: "Hilton Hawaiian Village", loc: "Hotel · Honolulu", g: "#104C97", principal: 2400, months: 6, paid: 2, monthsAgo: 2 },
+  seed: { id: "seedA", m: "Hilton Hawaiian Village", loc: "Hotel · Honolulu", g: "#104C97", principal: 2400, months: 6, paid: 2 },
 };
 
 /** Overlay a client DemoConfig onto the default card. Any client branding drops the network face. */

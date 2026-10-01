@@ -45,9 +45,9 @@ export default defineConfig(({ mode }) => {
         injectRegister: false,
         includeAssets: ["favicon.svg", "apple-touch-icon.png"],
         manifest: {
-          name: "BNPL Card Demo",
-          short_name: "BNPL Demo",
-          description: "Illustrative Buy Now, Pay Later cardholder app demo.",
+          name: "Card App Demo",
+          short_name: "Card Demo",
+          description: "Illustrative cardholder app demo: statements, payments, rewards, card controls and BNPL.",
           theme_color: "#F4F6FB",
           background_color: "#F4F6FB",
           display: "standalone",
