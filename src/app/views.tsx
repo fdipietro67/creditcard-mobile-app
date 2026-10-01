@@ -23,7 +23,7 @@ function TxnRow({ t }: { t: Txn }) {
   const { patch } = useApp();
   return (
     <div className="txn" role="button" onClick={() => patch({ txn: t.id, view: "txn" })}>
-      <div className="gl" style={{ background: t.g }}>{t.m[0]}</div>
+      <div className="gl" style={{ background: t.g }}>{t.glyph ?? t.m[0]}</div>
       <div className="mid">
         <div className="m">{t.m}</div>
         <div className="s">{t.loc}</div>
@@ -105,7 +105,7 @@ export function TxnDetailView() {
     <>
       <Back to="home"><h2>Transaction</h2></Back>
       <div className="tdcard">
-        <div className="gl" style={{ background: t.g }}>{t.m[0]}</div>
+        <div className="gl" style={{ background: t.g }}>{t.glyph ?? t.m[0]}</div>
         <div className="m">{t.m}</div>
         <div className="amt num">{fmt(t.amt)}</div>
         <div className="s">{t.loc} · Today</div>

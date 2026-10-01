@@ -132,7 +132,7 @@ function Stage() {
           <li><strong>Plans you can track.</strong> Active plans, schedules, and progress live in the BNPL hub.</li>
         </ul>
         <div className="foot">
-          <b>Illustrative only.</b> Cobrand partners are fictional and figures are sample data. Not a live product or a rate offer.
+          <b>Illustrative only.</b> Cobrand partners are fictional; merchants and figures are sample data. Not a live product or a rate offer.
         </div>
       </div>
 

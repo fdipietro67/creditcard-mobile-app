@@ -3,7 +3,7 @@
 :root{
   --ink:#0E1726;--ink-2:#42506A;--ink-3:#7A88A0;
   --canvas:#E9EDF4;--surface:#FFFFFF;--surface-2:#F4F6FB;--line:#E7ECF3;
-  --barclays:#00AEEF;--good:#1F9D6B;
+  --highlight:#00AEEF;--good:#1F9D6B;
   --accent:#4C6FFF;--accent-soft:rgba(76,111,255,.10);
   --card-bg:linear-gradient(135deg,#20204F,#3B2E7C 55%,#4C6FFF);
   --radius:20px;font-family:"Inter Variable","Inter",system-ui,sans-serif;
@@ -22,8 +22,8 @@ body{
 
 /* narration */
 .brief{padding-top:14px;max-width:420px}
-.brief .kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--barclays);margin-bottom:14px;display:flex;align-items:center;gap:9px}
-.brief .kicker::before{content:"";width:26px;height:2px;background:var(--barclays);border-radius:2px}
+.brief .kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--highlight);margin-bottom:14px;display:flex;align-items:center;gap:9px}
+.brief .kicker::before{content:"";width:26px;height:2px;background:var(--highlight);border-radius:2px}
 .brief h1{font-family:"Bricolage Grotesque Variable","Bricolage Grotesque";font-weight:700;font-size:33px;line-height:1.08;letter-spacing:-.02em;margin-bottom:14px}
 .brief h1 em{font-style:normal;color:var(--accent);transition:color .4s}
 .brief p.lede{color:var(--ink-2);font-size:15px;line-height:1.6;margin-bottom:24px}
@@ -80,10 +80,7 @@ body{
 .cardface{border-radius:var(--radius);background:var(--card-bg);color:#fff;padding:20px;box-shadow:0 18px 40px -18px rgba(20,20,60,.55);position:relative;overflow:hidden;transition:background .4s;min-height:190px;display:flex;flex-direction:column;justify-content:space-between}
 .cardface::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.09)}
 .cardface .cardtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:relative;z-index:2}
-.cardface .cardtop .bxlock img{filter:brightness(0) invert(1)}
-.cardface .cardtop .bxeagle{height:18px}
-.cardface .cardtop .bxmarkword{height:13px}
-.cardface .copartner{display:flex;flex-direction:column;align-items:flex-end;min-width:0}
+.cardface .copartner{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
 .cardface .cplogo{display:flex;align-items:center;gap:7px}
 .cardface .cplogo .astar,.cardface .cplogo .casa-arch{width:19px;height:19px;flex:none}
 .cardface .copartner .cpn{font-family:"Bricolage Grotesque Variable","Bricolage Grotesque";font-weight:600;font-size:15px;letter-spacing:-.01em;line-height:1.12}
@@ -325,8 +322,6 @@ body{
 .modal-card .link{color:var(--accent);font-weight:600;cursor:pointer}
 .modal-card .ok{margin-top:22px;width:100%;border:0;border-radius:12px;background:var(--surface-2);color:var(--ink);font:inherit;font-weight:700;font-size:15px;padding:14px;cursor:pointer;transition:background .15s}
 
-.bxlock{display:inline-flex;align-items:center;gap:5px;vertical-align:middle;line-height:1}
-.bxeagle{height:14px;width:auto;display:inline-block}.bxmarkword{height:11px;width:auto;display:inline-block}
 
 @media (max-width:960px){.stage{grid-template-columns:1fr;justify-items:center;gap:30px}.brief{max-width:420px;padding-top:0}}
 @media (max-width:440px){.phone{width:100%;max-width:392px;height:770px}}

@@ -82,7 +82,7 @@ function useAppState() {
     if (ui.planSource === "statement")
       return { amount: partner.statementEligible, title: "Statement purchase balance", sub: "Eligible amount", g: partner.accent, initial: "$" };
     const t = partner.txns.find((x) => x.id === ui.txn)!;
-    return { amount: t.amt, title: t.m, sub: t.loc + " · Today", g: t.g, initial: t.m[0] };
+    return { amount: t.amt, title: t.m, sub: t.loc + " · Today", g: t.g, initial: t.glyph ?? t.m[0] };
   };
 
   const createPlan = (): Plan => {

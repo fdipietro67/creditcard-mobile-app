@@ -1,5 +1,5 @@
 import { fmt } from "../lib/bnpl";
-import { BxMark, PartnerMark } from "./icons";
+import { PartnerMark } from "./icons";
 import type { Partner } from "./partners";
 
 export function CardFace({ p }: { p: Partner }) {
@@ -12,7 +12,6 @@ export function CardFace({ p }: { p: Partner }) {
   return (
     <div className="cardface" style={{ background: p.card }}>
       <div className="cardtop">
-        <BxMark />
         <div className="copartner">
           {p.logo ? (
             <div className="cplogo">

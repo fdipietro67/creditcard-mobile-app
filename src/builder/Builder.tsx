@@ -9,7 +9,6 @@ import {
 } from "../config/demoConfig";
 import { dataUrlBytes, downscaleImage } from "./image";
 import { downloadBrandedHtml, slug } from "./standalone";
-import { BARCLAYS_LOGO } from "../app/brandAssets";
 
 const PRESETS = ["#4C6FFF", "#E4002B", "#0B7A5C", "#C05A38", "#7A3CE0", "#0E1726", "#00A3AD", "#F28C00"];
 
@@ -161,9 +160,9 @@ export default function Builder() {
     <div className="builder min-h-dvh bg-[#E9EDF4] font-sans text-ink">
       <header className="no-print flex items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <div className="flex items-center gap-3">
-          <img src={BARCLAYS_LOGO} alt="" className="h-6 w-auto" />
+          <img src="/favicon.svg" alt="" className="size-9 rounded-[10px]" />
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[.14em] text-barclays">BNPL card demo</div>
+            <div className="text-[11px] font-semibold uppercase tracking-[.14em] text-highlight">BNPL card demo</div>
             <h1 className="font-display text-xl font-bold tracking-tight">Demo Builder</h1>
           </div>
         </div>
@@ -404,7 +403,7 @@ export default function Builder() {
       {/* Print-only sign: client name + QR for the booth table. */}
       {shownUrl && (
         <div className="print-only print-sign">
-          <img src={BARCLAYS_LOGO} alt="" style={{ height: 40 }} />
+          <img src="/favicon.svg" alt="" style={{ height: 56, borderRadius: 14 }} />
           <h1>{cfg.clientName} Card</h1>
           <p className="lead">Scan to try the Buy Now, Pay Later experience</p>
           <Qr url={shownUrl} size={420} />

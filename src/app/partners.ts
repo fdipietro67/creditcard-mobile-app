@@ -5,6 +5,7 @@ export type PartnerKey = "altair" | "casa";
 export type Txn = {
   id: string;
   m: string;
+  glyph?: string; // tile letter, when the first letter isn't the right one ("The …")
   loc: string;
   g: string;
   amt: number;
@@ -53,11 +54,16 @@ export const BASE_PARTNERS: Record<PartnerKey, Partner> = {
     statementEligible: 985.21,
     activity: [0.34, 0.5, 0.4, 0.62, 0.46, 0.74],
     txns: [
-      { id: "a1", m: "Altair Airlines", loc: "Flight · SFO→HNL", g: "#4C6FFF", amt: 1249.0, pct: "2.00%", elig: true },
-      { id: "a2", m: "The Peninsula", loc: "Hotel · Chicago", g: "#7A5CF0", amt: 842.5, pct: "2.00%", elig: true },
-      { id: "a3", m: "Bose", loc: "Electronics", g: "#2A9D8F", amt: 329.0, pct: "1.00%", elig: true },
-      { id: "a4", m: "Sunoco", loc: "Fuel", g: "#E76F51", amt: 58.2, pct: "1.00%", elig: false },
-      { id: "a5", m: "Blue Bottle Coffee", loc: "Dining", g: "#8D6E63", amt: 12.75, pct: "3.00%", elig: false },
+      // Everyday merchants (names only, no logos). Purchases at or above the plan minimum are
+      // eligible to split; small everyday spend isn't.
+      { id: "a1", m: "JetBlue", loc: "Flight · JFK→SJU", g: "#0033A0", amt: 1186.4, pct: "3.00%", elig: true },
+      { id: "a2", m: "Lowe's", loc: "Home improvement", g: "#004990", amt: 864.27, pct: "2.00%", elig: true },
+      { id: "a3", m: "Marriott", loc: "Hotel · Orlando", g: "#8A1538", amt: 642.18, pct: "2.00%", elig: true },
+      { id: "a4", m: "Best Buy", loc: "Electronics", g: "#0046BE", amt: 329.99, pct: "1.00%", elig: true },
+      { id: "a5", m: "Whole Foods Market", loc: "Groceries", g: "#00674B", amt: 142.33, pct: "1.00%", elig: false },
+      { id: "a6", m: "The Cheesecake Factory", glyph: "C", loc: "Dining", g: "#8C6D3F", amt: 87.46, pct: "3.00%", elig: false },
+      { id: "a7", m: "Shell", loc: "Fuel", g: "#DD1D21", amt: 54.2, pct: "1.00%", elig: false },
+      { id: "a8", m: "Starbucks", loc: "Coffee", g: "#00704A", amt: 6.85, pct: "3.00%", elig: false },
     ],
     seed: { id: "seedA", m: "Cirrus Resorts · Maui", loc: "Travel", g: "#7A5CF0", principal: 2400, months: 6, paid: 2, monthsAgo: 2 },
   },

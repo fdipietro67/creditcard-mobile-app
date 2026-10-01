@@ -10,14 +10,13 @@
   --color-ink: #0E1726;
   --color-ink-2: #42506A;
   --color-ink-3: #7A88A0;
-  --color-barclays: #00AEEF;
+  --color-highlight: #00AEEF;
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
 }
 
 /* Tailwind preflight resets button/img styles the prototype relied on UA defaults for. */
 .cardface img { display: inline-block; }
-.bxlock img { max-width: none; }
 
 /* Touch targets: keep the prototype's visual sizes but grow the hit area to >=44px. */
 .ai, .back, .addbtn { position: relative; }

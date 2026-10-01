@@ -1,12 +1,4 @@
-import { BARCLAYS_LOGO, BARCLAYS_WORDMARK } from "./brandAssets";
 import type { PartnerKey } from "./partners";
-
-export const BxMark = () => (
-  <span className="bxlock">
-    <img src={BARCLAYS_LOGO} alt="" className="bxeagle" />
-    <img src={BARCLAYS_WORDMARK} alt="Barclays" className="bxmarkword" />
-  </span>
-);
 
 export const PartnerMark = ({ kind }: { kind: PartnerKey }) =>
   kind === "altair" ? (

@@ -95,7 +95,7 @@ Uploaded card art is resized in the browser, typically to tens of KB. The Worker
 ```
 src/config/   DemoConfig schema + sanitizing (shared with Worker), URL/short-link/postMessage resolution
 src/lib/      BNPL math and formatting
-src/app/      partners (sample data), state store, views, card face, icons, idle reset, Barclays assets
+src/app/      partners (sample data), state store, views, card face, icons, idle reset
 src/builder/  Builder page, image resizing, offline-file download
 src/styles/   app.css (prototype CSS, same class names, in a cascade layer), builder.css, fonts, Tailwind
 worker/       Cloudflare Worker (API + static assets) and its tests
