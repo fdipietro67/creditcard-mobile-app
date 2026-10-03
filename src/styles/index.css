@@ -26,6 +26,23 @@
 .addbtn::before { content: ""; position: absolute; inset: -9px; }
 .mi { min-height: 48px; }
 
+/* Tablet/desktop stage: narration on the left, phone pinned to the right edge of the screen. */
+.stage { max-width: none; padding: 32px 48px 48px; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; }
+.brief { max-width: 520px; }
+.phone-wrap { justify-self: end; }
+@media (max-width: 960px) {
+  .stage { grid-template-columns: minmax(0, 1fr) auto; justify-items: stretch; gap: 28px; padding: 24px 24px 40px; }
+  .brief { padding-top: 6px; }
+  .brief h1 { font-size: 27px; }
+  .brief p.lede { font-size: 14px; }
+  .demo-list li { font-size: 12.5px; }
+}
+/* Too narrow for two columns: phone first, narration below. */
+@media (max-width: 720px) {
+  .stage { grid-template-columns: 1fr; justify-items: center; }
+  .phone-wrap { justify-self: center; order: -1; }
+}
+
 /* Attendee phone: drop the stage + device chrome and run the app full-bleed. */
 @media (max-width: 520px) {
   .stage { display: block; justify-items: normal; padding: 0; max-width: none; }
