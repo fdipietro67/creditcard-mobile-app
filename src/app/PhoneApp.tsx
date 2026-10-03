@@ -4,6 +4,7 @@ import { Ico, MenuIcons, SearchIco } from "./icons";
 import { AppStateProvider, useApp, type Tab, type View } from "./store";
 import { idleSecondsFromUrl, useIdleReset } from "./useIdleReset";
 import { useDemoConfig } from "../config/DemoConfigProvider";
+import { APP_THEME } from "./theme";
 import { ActivityView, HomeView, TxnDetailView } from "./screens/home";
 import { BnplView, PlanDetailView, ReviewView, SplitView } from "./screens/bnpl";
 import { AutoPayView, PayDoneView, PayReviewView, PayView } from "./screens/payments";
@@ -181,8 +182,11 @@ function Stage() {
     r.setProperty("--accent", partner.accent);
     r.setProperty("--accent-soft", partner.accentSoft);
     r.setProperty("--card-bg", partner.card);
+    // Money20/20 black & pink only on the default demo; client brands keep the classic neutrals.
+    if (partner.network === "visa-signature" && APP_THEME === "money2020") document.documentElement.dataset.theme = "money2020";
+    else delete document.documentElement.dataset.theme;
     document.title = partner.product;
-  }, [partner.accent, partner.accentSoft, partner.card, partner.product]);
+  }, [partner.accent, partner.accentSoft, partner.card, partner.product, partner.network]);
 
   return (
     <div className="stage">

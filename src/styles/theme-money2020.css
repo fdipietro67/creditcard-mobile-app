@@ -1,0 +1,31 @@
+/* Money20/20 black & pink theme for the default demo (see src/app/theme.ts to switch it off).
+   Applied via <html data-theme="money2020">; overrides the prototype's blue-tinted neutrals. */
+:root[data-theme="money2020"] {
+  --ink: #000000;
+  --ink-2: #4A4A4A;
+  --ink-3: #6E6E6E;
+  --canvas: #ECECEC;
+  --surface-2: #F5F5F5;
+  --line: #E4E4E4;
+  --highlight: #FF005A;
+}
+:root[data-theme="money2020"] body {
+  background:
+    radial-gradient(1100px 600px at 78% -8%, #FFE1EC 0%, transparent 60%),
+    radial-gradient(900px 500px at -6% 108%, #E4E4E4 0%, transparent 55%),
+    var(--canvas);
+}
+:root[data-theme="money2020"] :is(.stmt-hero, .rw-hero) {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(255, 0, 90, .38), transparent 55%),
+    linear-gradient(135deg, #000000, #141414 60%, #262626);
+}
+:root[data-theme="money2020"] .bnplsum { background: #000000; }
+:root[data-theme="money2020"] .bnplsum .ic,
+:root[data-theme="money2020"] .util i { background: #FF005A; }
+:root[data-theme="money2020"] .tgl { background: #D2D2D2; }
+:root[data-theme="money2020"] .tgl.on { background: var(--accent); }
+:root[data-theme="money2020"] .segc { background: #E6E6E6; }
+:root[data-theme="money2020"] .tabbar button.on { position: relative; }
+:root[data-theme="money2020"] .tabbar button.on::before { content: ""; position: absolute; top: -7px; left: 30%; right: 30%; height: 3px; border-radius: 0 0 3px 3px; background: #FF005A; }
+:root[data-theme="money2020"] .bars i.hot { background: linear-gradient(180deg, #FF005A, #FF7AA8); }

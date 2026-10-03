@@ -1,4 +1,5 @@
 import { hexA, type DemoConfig } from "../config/demoConfig";
+import { APP_THEME, THEME_ACCENT } from "./theme";
 
 export type Txn = {
   id: string;
@@ -38,8 +39,8 @@ export const DEFAULT_CARD: Partner = {
   product: "Money20/20 Visa Signature",
   network: "visa-signature",
   card: "linear-gradient(135deg,#000000 0%,#0B0B0C 55%,#1A1A1C 100%)",
-  accent: "#1434CB",
-  accentSoft: "rgba(20,52,203,.10)",
+  accent: THEME_ACCENT[APP_THEME].accent,
+  accentSoft: THEME_ACCENT[APP_THEME].soft,
   rewardsLabel: "",
   limit: 15000,
   pan: "•••• •••• •••• 4417",

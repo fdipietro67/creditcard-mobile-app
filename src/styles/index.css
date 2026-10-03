@@ -4,6 +4,7 @@
 @import "./app.css" layer(components);
 @import "./screens.css" layer(components);
 @import "./builder.css";
+@import "./theme-money2020.css";
 
 @theme {
   --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif;
