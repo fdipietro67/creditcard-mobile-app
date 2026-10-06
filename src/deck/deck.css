@@ -119,7 +119,11 @@
 .dk-biz-card p { font-size: 26px; font-weight: 600; color: var(--eu-ink-2); }
 
 /* live app slides: phone in a full-height right column */
-.dk-has-aside .dk-titles, .dk-has-aside .dk-body { padding-right: 640px; }
+.dk-aside-right .dk-titles, .dk-aside-right .dk-body { padding-right: 640px; }
+/* Phone on the left (live demo slides): title and copy move to the right column. */
+.dk-aside-left .dk-titles, .dk-aside-left .dk-body { padding-left: 640px; }
+.dk-aside-left .dk-titles::before { left: 616px; }
+.dk-aside-left .dk-aside { right: auto; left: 120px; }
 .dk-has-aside .dk-body { gap: 40px; }
 .dk-aside { position: absolute; right: 120px; top: 150px; bottom: 96px; display: flex; align-items: center; }
 .dk-phone { width: 400px; height: 830px; border-radius: 54px; background: #05070C; padding: 12px; box-shadow: 0 40px 90px -30px rgba(14,23,38,.55), 0 0 0 1px rgba(14,23,38,.08); }

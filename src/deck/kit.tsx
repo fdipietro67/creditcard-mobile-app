@@ -22,8 +22,11 @@ export function Slide({
   children,
   tone = "light",
   aside,
+  asideSide = "right",
 }: {
   aside?: ReactNode;
+  /** Which side the aside (e.g. the live phone) sits on; the title and body take the other side. */
+  asideSide?: "left" | "right";
   section: string;
   brand?: Brand;
   kicker?: string;
@@ -33,7 +36,7 @@ export function Slide({
   tone?: "light" | "tint";
 }) {
   return (
-    <div className={`dk-slide dk-content ${tone === "tint" ? "dk-tint" : ""} ${aside ? "dk-has-aside" : ""}`}>
+    <div className={`dk-slide dk-content ${tone === "tint" ? "dk-tint" : ""} ${aside ? `dk-has-aside dk-aside-${asideSide}` : ""}`}>
       <header className="dk-head">
         <img src={LOGOS.euronetColor} alt="Euronet" className="dk-logo" />
         {brand !== "euronet" && <img src={LOGOS[brand]} alt={brand === "ren" ? "Ren" : "CoreCard"} className="dk-sublogo" />}
@@ -195,10 +198,17 @@ export function LiveApp({ start = "home", tour }: { start?: string; tour?: boole
   const ref = useRef<HTMLIFrameElement>(null);
   useEffect(() => {
     liveFrame = ref.current;
+    // Send the starting screen once the app says it's listening (it posts __demoReady when mounted;
+    // the iframe's load event can fire before the app's message listener exists).
+    const onReady = (ev: MessageEvent) => {
+      if (ev.data?.__demoReady && ev.source === ref.current?.contentWindow && start !== "home") sendToApp({ __demoNav: start });
+    };
+    window.addEventListener("message", onReady);
     return () => {
+      window.removeEventListener("message", onReady);
       if (liveFrame === ref.current) liveFrame = null;
     };
-  }, []);
+  }, [start]);
   // Kiosk: walk through the main screens on its own.
   useEffect(() => {
     if (!tour) return;
@@ -211,7 +221,7 @@ export function LiveApp({ start = "home", tour }: { start?: string; tour?: boole
   }, [tour, start]);
   return (
     <div className="dk-phone">
-      <iframe ref={ref} title="Live cardholder app" {...appFrameProps()} onLoad={() => start !== "home" && sendToApp({ __demoNav: start })} />
+      <iframe ref={ref} title="Live cardholder app" {...appFrameProps()} />
     </div>
   );
 }

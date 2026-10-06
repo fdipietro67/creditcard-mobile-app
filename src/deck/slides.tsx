@@ -235,6 +235,7 @@ export const SLIDES: SlideDef[] = [
         kicker="Live demo"
         title={<>The cardholder app, <span className="teal">with BNPL built in</span></>}
         aside={<LiveApp tour={kiosk} />}
+        asideSide="left"
       >
         <Checks
           items={[
@@ -253,7 +254,7 @@ export const SLIDES: SlideDef[] = [
     section: CC,
     hold: 20,
     render: ({ kiosk }) => (
-      <Slide section={CC} brand="corecard" kicker="Loyalty" title="Rewards that win top of wallet" aside={<LiveApp start="rewards" />}>
+      <Slide section={CC} brand="corecard" kicker="Loyalty" title="Rewards that win top of wallet" aside={<LiveApp start="rewards" />} asideSide="left">
         <Checks
           items={[
             { b: "Earn by category.", t: "Tiered cash back on travel, dining, hotels and everyday spend, shown on every transaction." },
