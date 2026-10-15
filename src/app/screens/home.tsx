@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { fmt, fmt0 } from "../../lib/bnpl";
 import { dLabel, dLong, relDay, daysBetween, today } from "../../lib/calendar";
 import { cashBack, txnDate, type Line } from "../account";
-import { CardFace } from "../CardFace";
+import { FlipCard } from "../CardFace";
+import { useLastPayment } from "./overview";
 import { ChevR, ClockIco, Ico } from "../icons";
 import type { Txn } from "../partners";
 import { useApp } from "../store";
@@ -44,14 +45,20 @@ const QUICK: { label: string; icon: string; to: "pay" | "statements" | "rewards"
 ];
 
 export function HomeView() {
-  const { partner: p, plans, nav, tab, acct, data } = useApp();
+  const { partner: p, plans, nav, tab, acct, data, statements } = useApp();
   const util = Math.min(100, Math.round((acct.currentBalance / acct.limit) * 100));
+  const last = useLastPayment();
+  const [page, setPage] = useState(0);
+  // Monthly activity tile: last six statement periods + this one, scaled to the largest.
+  const months = [...[...statements].reverse().map((s) => s.purchases), acct.cycleTotal];
+  const mMax = Math.max(...months);
+  const stmtCashBack = statements[0].lines.reduce((t, l) => t + (l.kind === "purchase" ? cashBack(l.amt, l.pct) : 0), 0);
   const rem = plans.reduce((s, pl) => s + pl.monthly * (pl.months - pl.paid), 0);
   const due = acct.latest.due;
   const daysToDue = daysBetween(today(), due);
   return (
     <>
-      <CardFace p={p} available={acct.available} locked={data.controls.locked} />
+      <FlipCard p={p} available={acct.available} locked={data.controls.locked} />
       <div className="quick">
         {QUICK.map((q) => (
           <button key={q.label} className="qa" onClick={() => (q.to === "controls" ? nav("controls") : tab(q.to))}>
@@ -60,28 +67,54 @@ export function HomeView() {
           </button>
         ))}
       </div>
-      <div className="credit">
-        <div className="r1">
-          <div>
-            <div className="lbl">Available credit</div>
-            <div className="av num">{fmt(acct.available)}</div>
+      <div
+        className="pager"
+        onScroll={(e) => {
+          const el = e.currentTarget;
+          setPage(Math.round(el.scrollLeft / el.clientWidth));
+        }}
+      >
+        <div className="credit pg">
+          <div className="r1">
+            <div>
+              <div className="lbl">Available credit</div>
+              <div className="av num">{fmt(acct.available)}</div>
+            </div>
+            <a className="detail" onClick={() => nav("balance")}>Balance detail →</a>
           </div>
-          <a className="detail" onClick={() => nav("activity")}>Activity →</a>
+          <div className="util"><i style={{ width: `${util}%` }} /></div>
+          <div className="r2">
+            <span>Current balance <b className="num">{fmt(acct.currentBalance)}</b></span>
+            <span>Limit <b className="num">{fmt0(acct.limit)}</b></span>
+          </div>
         </div>
-        <div className="util"><i style={{ width: `${util}%` }} /></div>
-        <div className="r2">
-          <span>Current balance <b className="num">{fmt(acct.currentBalance)}</b></span>
-          <span>Limit <b className="num">{fmt0(acct.limit)}</b></span>
+        <div className="credit pg">
+          <div className="r1">
+            <div>
+              <div className="lbl">Last statement · {dLabel(acct.latest.closing)}</div>
+              <div className="av num">{fmt(acct.latest.newBalance)}</div>
+            </div>
+            <a className="detail" onClick={() => nav("statement", "0")}>View statement →</a>
+          </div>
+          <div className="r2 pg-stmt">
+            <span>Minimum due <b className="num">{fmt(acct.latest.minDue)}</b></span>
+            <span>Due <b>{dLabel(acct.latest.due)}</b></span>
+          </div>
+          <div className="r2">
+            <span>Remaining to pay <b className="num">{fmt(acct.statementDue)}</b></span>
+            <span>Cash back earned <b className="num">{fmt(stmtCashBack)}</b></span>
+          </div>
         </div>
       </div>
+      <div className="dots" aria-hidden="true"><i className={page === 0 ? "on" : ""} /><i className={page === 1 ? "on" : ""} /></div>
       <div className="row2">
-        <div className="tile" role="button" onClick={() => tab("rewards")}>
-          <div className="lbl">Cash back</div>
-          <div className="amt num" style={{ fontSize: 20, fontWeight: 600, marginTop: 8 }}>{fmt(data.rewards)}</div>
-          <div className="sub" style={{ fontSize: 11, color: "var(--ink-3)", marginTop: 2 }}>Ready to redeem</div>
+        <div className="tile" role="button" onClick={() => nav("monthly")}>
+          <div className="lbl">Monthly activity</div>
+          <div className="amt num" style={{ fontSize: 20, fontWeight: 600, marginTop: 8 }}>{fmt(acct.cycleTotal)}</div>
+          <div className="sub" style={{ fontSize: 11, color: "var(--ink-3)", marginTop: 2 }}>Spent this period</div>
           <div className="bars">
-            {p.activity.map((v, i) => (
-              <i key={i} className={i === p.activity.length - 1 ? "hot" : ""} style={{ height: `${Math.round(v * 100)}%` }} />
+            {months.map((v, i) => (
+              <i key={i} className={i === months.length - 1 ? "hot" : ""} style={{ height: `${Math.max(8, Math.round((v / mMax) * 100))}%` }} />
             ))}
           </div>
         </div>
@@ -93,6 +126,7 @@ export function HomeView() {
               ? `${acct.minDue > 0 ? `Min ${fmt(acct.minDue)}` : "Minimum paid"} · due ${daysToDue <= 1 ? (daysToDue === 1 ? "tomorrow" : "today") : dLabel(due)}`
               : "Thank you for your payment"}
           </div>
+          <div className="sub lastpay">Last paid {fmt(last.amount)} on {dLabel(last.date)}</div>
           <button className="pay" onClick={() => tab("pay")}>{acct.statementDue > 0 ? "Pay" : "Make a payment"}</button>
         </div>
       </div>
@@ -110,7 +144,10 @@ export function HomeView() {
       </div>
       <div className="sechead">
         <h3>Recent transactions</h3>
-        <a onClick={() => nav("activity")}>See all</a>
+        <span className="sechead-r">
+          <button className="iconbtn" aria-label="Filter transactions" onClick={() => nav("activity")}><Ico n="filter" size={16} /></button>
+          <a onClick={() => nav("activity")}>See all</a>
+        </span>
       </div>
       {p.txns.map((t) => <TxnRow key={t.id} t={t} />)}
     </>

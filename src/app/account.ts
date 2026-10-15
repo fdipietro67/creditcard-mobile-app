@@ -164,3 +164,22 @@ export function summarize(opts: {
     paidSinceStatement: paid,
   };
 }
+
+// ── Spending categories (Monthly Activity) ──
+export const CATEGORIES = ["Travel", "Dining", "Shopping", "Home", "Groceries & pharmacy", "Fuel", "Subscriptions"] as const;
+export type Category = (typeof CATEGORIES)[number];
+export function categoryOf(loc: string): Category {
+  const l = loc.toLowerCase();
+  if (/flight|hotel|rideshare|car rental/.test(l)) return "Travel";
+  if (/dining|coffee|food delivery/.test(l)) return "Dining";
+  if (/home improvement/.test(l)) return "Home";
+  if (/grocer|pharmacy/.test(l)) return "Groceries & pharmacy";
+  if (/fuel/.test(l)) return "Fuel";
+  if (/streaming/.test(l)) return "Subscriptions";
+  return "Shopping";
+}
+export function byCategory(lines: { loc: string; amt: number }[]) {
+  const m = new Map<Category, number>();
+  for (const l of lines) m.set(categoryOf(l.loc), r2((m.get(categoryOf(l.loc)) ?? 0) + l.amt));
+  return [...m.entries()].map(([cat, amt]) => ({ cat, amt })).sort((a, b) => b.amt - a.amt);
+}

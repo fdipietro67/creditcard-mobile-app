@@ -88,7 +88,7 @@ export const NOTES: Record<string, Note> = {
   "app-demo": {
     say: [
       "This is a live cardholder app, not a video. Everything is tappable.",
-      "Home: the Money20/20 Visa Signature card, available credit, statement balance and cash back.",
+      "Home: the Money20/20 Visa Signature card, available credit, statement balance and cash back. Tap the card to flip it and reveal the number and CVV; swipe the balance panel for the last statement; Balance detail and Monthly activity go one level deeper.",
       "BNPL from the statement: tap BNPL → Proceed. The last statement's purchases are $985.21. Pick 3 months at $339.29 a month and 17.23% APR, or 4 months at $246.30 at 0% APR → Continue → agree to the terms → Confirm → open the installment schedule.",
       "Or from a purchase: tap JetBlue on Home → Set up a plan.",
       "Statements: the latest is $1,385.21 with a $440.00 minimum, which includes the $400 Hilton plan installment. Then show Rewards and Card controls briefly.",

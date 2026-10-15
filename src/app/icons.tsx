@@ -141,6 +141,13 @@ const P: Record<string, string> = {
   pin: "M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11ZM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
   more: "M5 12h.01M12 12h.01M19 12h.01",
   info: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 11v6M12 7.5v.5",
+  eye: "M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
+  eyeoff: "M3 3l18 18M10.6 5.1A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a17.8 17.8 0 0 1-3.2 4.2M6.6 6.6C3.8 8.3 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2",
+  back: "m15 6-6 6 6 6",
+  filter: "M4 6h16M7 12h10M10 18h4",
+  flip: "M4 12a8 8 0 0 1 13.7-5.7M20 4v4h-4M20 12a8 8 0 0 1-13.7 5.7M4 20v-4h4",
+  chart: "M4 20V10M10 20V4M16 20v-7M22 20H2",
+  power: "M12 3v8M7 5.5a8 8 0 1 0 10 0",
 };
 export type IcoName = keyof typeof P;
 export const Ico = ({ n, size = 18, w = 2 }: { n: string; size?: number; w?: number }) => (

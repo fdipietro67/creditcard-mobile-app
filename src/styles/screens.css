@@ -154,3 +154,105 @@
 
 .proceed:disabled { opacity: .45; cursor: not-allowed; }
 .splitcard[role="button"] { cursor: pointer; }
+
+/* ── sign-in flow ── */
+.auth { display: flex; flex-direction: column; min-height: 100%; padding-top: 8px; }
+.auth-brand { text-align: center; }
+.auth-card { width: 78%; margin: 6px auto 16px; transform: rotate(-4deg); }
+.auth-card .cardface { min-height: 0; aspect-ratio: 1.586; padding: 14px; font-size: 11px; }
+.auth-card .cardface .pan { font-size: 13px; }
+.auth-card .cardface .lbl, .auth-card .cardface .val, .auth-card .cardholder { display: none; }
+.auth-card .m2020-logo { height: 24px !important; }
+.auth-card .visa-logo { height: 16px !important; }
+.auth-brand h2 { font-family: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
+.auth-brand p { font-size: 13px; color: var(--ink-3); margin-top: 4px; }
+.auth-form { margin-top: 10px; }
+.pw { position: relative; display: block; }
+.pw .inp { padding-right: 48px; }
+.pw-eye { position: absolute; right: 2px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; background: none; color: var(--ink-3); display: grid; place-items: center; cursor: pointer; }
+.auth-links { display: flex; justify-content: space-between; margin-top: 8px; }
+.auth-links button, .auth-foot button { border: 0; background: none; color: var(--accent); font: inherit; font-size: 13px; font-weight: 600; min-height: 44px; cursor: pointer; padding: 0 2px; }
+.auth-foot { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; color: var(--ink-3); margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--line); }
+.auth-powered { margin-top: auto; padding: 18px 0 6px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; color: var(--ink-3); }
+.auth-powered img { height: 22px; width: auto; }
+.auth-sub h2 { font-family: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif; font-size: 22px; font-weight: 700; margin-top: 6px; }
+.auth-back { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; color: var(--accent); font: inherit; font-size: 14px; font-weight: 600; min-height: 44px; cursor: pointer; padding: 0; }
+.auth-sent { padding-top: 60px; }
+.auth-sent .checkwrap { color: var(--accent); }
+.spin { display: inline-block; width: 20px; height: 20px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,.35); border-top-color: #fff; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── card flip ── */
+.flip { perspective: 1200px; }
+.flip-in { position: relative; transition: transform .6s cubic-bezier(.3,.7,.3,1); transform-style: preserve-3d; }
+.flip.on .flip-in { transform: rotateY(180deg); }
+.flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; cursor: pointer; }
+.flip-back { position: absolute; inset: 0; transform: rotateY(180deg); }
+/* Only the face that's showing takes taps (a hidden backface can still be hit-tested). */
+.flip.on .flip-face:not(.flip-back), .flip:not(.on) .flip-back { pointer-events: none; }
+.card-back { height: 100%; padding: 0; color: #fff; justify-content: flex-start; }
+.cb-stripe { height: 34px; background: #111; margin-top: 18px; flex: none; position: relative; z-index: 2; }
+.cb-rows { padding: 12px 20px 0; display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 2; }
+.cb-2 { display: flex; gap: 28px; }
+.cb-r { display: flex; flex-direction: column; gap: 1px; }
+.cb-r span { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
+.cb-r b { font-size: 15px; letter-spacing: .06em; font-weight: 600; }
+.cb-toggles { margin-top: auto; padding: 0 20px 14px; display: flex; gap: 18px; position: relative; z-index: 3; }
+.cb-toggles label { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 600; cursor: pointer; min-height: 32px; }
+.cb-toggles input { position: absolute; opacity: 0; pointer-events: none; }
+.cb-toggles i { width: 34px; height: 20px; border-radius: 99px; background: rgba(255,255,255,.3); position: relative; transition: background .2s; flex: none; }
+.cb-toggles i::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; }
+.cb-toggles input:checked + i { background: var(--accent); }
+.cb-toggles input:checked + i::after { transform: translateX(14px); }
+.cb-toggles input:focus-visible + i { outline: 2px solid #fff; outline-offset: 2px; }
+.flip-hint { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 11px; color: var(--ink-3); margin-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .flip-in { transition: none; } }
+
+/* ── balance pager ── */
+.pager { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin-top: 14px; scrollbar-width: none; }
+.pager::-webkit-scrollbar { display: none; }
+.pager .pg { scroll-snap-align: start; margin-top: 0; }
+.pg-stmt { margin-top: 14px !important; }
+.dots { display: flex; justify-content: center; gap: 5px; margin-top: 8px; }
+.dots i { width: 6px; height: 6px; border-radius: 99px; background: var(--line); transition: .2s; }
+.dots i.on { width: 16px; background: var(--ink); }
+.lastpay { margin-top: 4px !important; }
+.sechead-r { display: flex; align-items: center; gap: 10px; }
+.iconbtn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); display: grid; place-items: center; cursor: pointer; position: relative; }
+.iconbtn::before { content: ""; position: absolute; inset: -4px; }
+
+/* ── month charts (Monthly Activity, rewards) ── */
+.mchart { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 14px 10px; }
+.rw-chart { margin-top: 14px; }
+.mchart-h { display: flex; flex-direction: column; gap: 2px; padding: 0 4px 10px; }
+.mchart-h span { font-size: 11.5px; color: var(--ink-3); font-weight: 600; }
+.mchart-h b { font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
+.mchart-h small { font-size: 11px; color: var(--ink-3); }
+.mbars { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; height: 130px; align-items: end; }
+.mbars button { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: 6px; border: 0; background: none; cursor: pointer; padding: 0; font: inherit; min-width: 0; }
+.mbars i { display: block; border-radius: 6px 6px 3px 3px; background: color-mix(in srgb, var(--accent) 22%, var(--surface-2)); transition: background .2s; }
+.mbars button.on i { background: var(--accent); }
+.mbars span { font-size: 10.5px; color: var(--ink-3); font-weight: 600; text-align: center; }
+.mbars button.on span { color: var(--ink); }
+.rw-chart .mbars { height: 96px; }
+.catbar { width: 54px; height: 6px; border-radius: 99px; background: var(--surface-2); overflow: hidden; flex: none; }
+.catbar i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+
+/* ── top merchants ── */
+.merch { display: grid; grid-auto-flow: column; grid-auto-columns: 92px; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.merch::-webkit-scrollbar { display: none; }
+.merch-i { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.merch-i .gl { width: 40px; height: 40px; border-radius: 12px; font-size: 15px; }
+.merch-i b { font-size: 11.5px; font-weight: 600; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; min-height: 2.4em; }
+.merch-i > span.num { font-size: 12px; font-weight: 700; color: var(--good); }
+
+/* ── rewards summary donut ── */
+.donut-card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 16px 14px; margin-bottom: 4px; }
+.donut { width: 190px; height: 190px; display: block; margin: 0 auto; transform: rotate(0deg); }
+.donut-mid { position: absolute; top: 18px; left: 0; right: 0; height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+.donut-mid .num { font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
+.donut-mid small { font-size: 11px; color: var(--ink-3); font-weight: 600; }
+.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin-top: 14px; font-size: 12px; color: var(--ink-2); }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.legend b { margin-left: auto; color: var(--ink); }

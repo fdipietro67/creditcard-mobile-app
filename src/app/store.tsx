@@ -20,7 +20,11 @@ export type View =
   // Account services
   | "services" | "profile" | "cli" | "authuser" | "travel"
   // Alerts
-  | "alerts" | "alertprefs";
+  | "alerts" | "alertprefs"
+  // Account overview
+  | "balance" | "monthly"
+  // Rewards extras
+  | "rewardsummary" | "rewardmonth";
 
 export type Tab = "home" | "pay" | "statements" | "rewards";
 const TAB_ROOTS: Record<Tab, View> = { home: "home", pay: "pay", statements: "statements", rewards: "rewards" };
@@ -138,8 +142,13 @@ let seq = 0;
 const uid = (p: string) => `${p}${Date.now().toString(36)}${(seq++).toString(36)}`;
 export const confNo = () => "C" + Math.floor(100000000 + Math.random() * 899999999);
 
+/** Show the sign-in screen? Not in embedded previews (deck, Builder) or with ?login=0. */
+const loginEnabled = (preview: boolean) =>
+  !preview && new URLSearchParams(window.location.search).get("login") !== "0";
+
 function useAppState() {
-  const { config } = useDemoConfig();
+  const { config, preview } = useDemoConfig();
+  const [signedIn, setSignedIn] = useState(() => !loginEnabled(preview));
   const [ui, setUi] = useState<UiState>(initialUi);
   const [data, setData] = useState<DataState>(initialData);
   const [resetNonce, setResetNonce] = useState(0);
@@ -217,15 +226,24 @@ function useAppState() {
     return np;
   };
 
-  /** Full demo reset: fresh data, home screen. */
+  /** Full demo reset: fresh data, home screen — and back to sign-in for the next guest. */
   const reset = useCallback(() => {
     setUi(initialUi());
     setData(initialData());
     setResetNonce((n) => n + 1);
+    setSignedIn(!loginEnabled(preview));
+  }, [preview]);
+  const signIn = useCallback(() => {
+    setUi(initialUi());
+    setSignedIn(true);
+  }, []);
+  const signOut = useCallback(() => {
+    setUi(initialUi());
+    setSignedIn(false);
   }, []);
 
   return {
-    resetNonce, config, partner, plans: data.plans, data, acct, statements, ui, view, param,
+    signedIn, signIn, signOut, resetNonce, config, partner, plans: data.plans, data, acct, statements, ui, view, param,
     patch, nav, replace, back, home, tab, toast, update, pushAlert, subject, createPlan, reset, uid,
   };
 }

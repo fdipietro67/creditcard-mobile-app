@@ -9,7 +9,9 @@ import { ActivityView, HomeView, TxnDetailView } from "./screens/home";
 import { BnplView, PlanDetailView, ReviewView, SplitView } from "./screens/bnpl";
 import { AutoPayView, PayDoneView, PayReviewView, PayView } from "./screens/payments";
 import { StatementView, StatementsView } from "./screens/statements";
-import { RedeemDoneView, RedeemView, RewardsView } from "./screens/rewards";
+import { RedeemDoneView, RedeemView, RewardMonthView, RewardSummaryView, RewardsView } from "./screens/rewards";
+import { BalanceDetailView, MonthlyActivityView } from "./screens/overview";
+import { AuthFlow } from "./screens/auth";
 import { ControlsView, ReplaceDoneView, ReplaceView } from "./screens/controls";
 import { AuthUserView, CliDoneView, CliView, ProfileView, ServicesView, TravelView } from "./screens/services";
 import { AlertPrefsView, AlertsView } from "./screens/alerts";
@@ -24,6 +26,8 @@ const VIEWS: Record<View, () => React.JSX.Element | null> = {
   controls: ControlsView, replace: ReplaceView, replacedone: ReplaceDoneView,
   services: ServicesView, profile: ProfileView, cli: CliRoute, authuser: AuthUserView, travel: TravelView,
   alerts: AlertsView, alertprefs: AlertPrefsView,
+  balance: BalanceDetailView, monthly: MonthlyActivityView,
+  rewardsummary: RewardSummaryView, rewardmonth: RewardMonthView,
 };
 
 function CliRoute() {
@@ -75,7 +79,7 @@ const MENU: { label: string; icon: keyof typeof MenuIcons | "doc"; to: View; bnp
 ];
 
 function Menu() {
-  const { ui, patch, nav, tab, data } = useApp();
+  const { ui, patch, nav, tab, data, signOut } = useApp();
   const unread = data.alerts.filter((a) => a.unread).length;
   return (
     <div className={`menu-scrim ${ui.menu ? "open" : ""}`} onClick={(e) => e.target === e.currentTarget && patch({ menu: false })}>
@@ -88,6 +92,10 @@ function Menu() {
             <span className="mic">{m.icon === "doc" ? <Ico n="doc" size={17} /> : MenuIcons[m.icon]}</span>
           </div>
         ))}
+        <div role="menuitem" className="mi" onClick={signOut}>
+          Sign Out
+          <span className="mic"><Ico n="power" size={17} /></span>
+        </div>
       </div>
     </div>
   );
@@ -153,7 +161,7 @@ function SuccessModal() {
 }
 
 function Stage() {
-  const { partner, ui, patch, reset, resetNonce, nav, data, tab, home } = useApp();
+  const { partner, ui, patch, reset, resetNonce, nav, data, tab, home, signedIn } = useApp();
   const unread = data.alerts.filter((a) => a.unread).length;
   const { preview } = useDemoConfig();
   const [idleSeconds] = useState(() => (preview ? 0 : idleSecondsFromUrl()));
@@ -235,6 +243,13 @@ function Stage() {
                 </svg>
               </span>
             </div>
+            {!signedIn ? (
+              <>
+                <div className="body"><div className="view active"><AuthFlow key={resetNonce} /></div></div>
+                <div className="homebar"><i /></div>
+              </>
+            ) : (
+              <>
             <div className="appbar">
               <div className="apptitle">{partner.product}</div>
               <div className="appicons">
@@ -250,10 +265,12 @@ function Stage() {
             <Menu />
             <Toast />
             <SuccessModal />
+              </>
+            )}
           </div>
         </div>
         <p className="caption" style={{ fontSize: 12, color: "var(--ink-3)", maxWidth: 392, textAlign: "center", lineHeight: 1.5 }}>
-          Use the tabs and the ⋯ menu to explore. Tap an eligible purchase to split it into payments.
+          {signedIn ? "Use the tabs and the ⋯ menu to explore. Tap the card for its details." : "Tap Sign In to open the app (demo credentials are filled in)."}
         </p>
       </div>
     </div>

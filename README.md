@@ -1,6 +1,7 @@
 # Card App Demo — Money20/20
 
-A themeable, fully working cardholder app for the booth: home, activity and search, statements
+A themeable, fully working cardholder app for the booth: sign-in (with forgot user name/password and
+sign up), home with a flip-to-reveal card, balance detail and monthly activity, activity and search, statements
 (with a statement page), payments and AutoPay, cash back rewards and redemption, card controls,
 account services, alerts, documents, and Buy Now, Pay Later. Every screen is fed by one ledger
 (`src/app/account.ts`), so balances, statements, payments and plans always agree. A Builder page lets
@@ -106,6 +107,12 @@ Loyalty. The demo and Loyalty slides embed the live card app.
 - **Offline:** `npm run build` also produces `euronet-deck.html` (about 1.2 MB). It's the whole deck in
   one file, with the single-file card app packed inside for the live slides. It opens from disk and
   makes no network requests.
+
+## Sign-in
+
+The standalone app opens on a sign-in screen with demo credentials filled in, as the real CoreCard app
+does. Sign Out is in the ⋯ menu. Reset and the idle timeout return to sign-in for the next guest. The
+deck's live phone and the Builder preview skip sign-in, and `?login=0` skips it anywhere.
 
 ## Booth behavior
 
